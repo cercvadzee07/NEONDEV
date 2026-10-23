@@ -558,6 +558,49 @@ body {
   align-items: center;
   justify-content: center;
   border: 2px solid var(--neon-primary);
+  overflow: hidden; /* უზრუნველყოფს სურათის იდეალურად მორგებას წრეში */
+}
+
+.avatar-svg-img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px var(--neon-glow));
+  transition: transform 0.3s ease;
+}
+
+.about-card:hover .avatar-svg-img {
+  transform: scale(1.08) rotate(5deg);
+}
+
+.avatar-wrapper.no-circle {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: transparent;
+  border: none;
+}
+
+.avatar-svg-raw {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Glow ეფექტი უშუალოდ SVG ლოგოს კონტურზე */
+  filter: drop-shadow(0 0 8px var(--neon-primary))
+    drop-shadow(0 0 20px var(--neon-glow));
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+}
+
+.about-card:hover .avatar-svg-raw {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 14px var(--neon-primary))
+    drop-shadow(0 0 30px var(--neon-secondary));
 }
 
 .avatar-code {
