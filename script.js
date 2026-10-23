@@ -121,12 +121,10 @@ function applyLanguage(lang) {
   localStorage.setItem("selectedLang", lang);
   document.documentElement.lang = lang;
 
-  // დროშის აქტიური სტატუსის მონიშვნა
   langBtns.forEach((btn) => {
     btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
   });
 
-  // ტექსტების განახლება
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
     if (i18nData[lang] && i18nData[lang][key]) {
@@ -134,7 +132,6 @@ function applyLanguage(lang) {
     }
   });
 
-  // Placeholder-ების განახლება
   document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
     const key = el.getAttribute("data-i18n-ph");
     if (i18nData[lang] && i18nData[lang][key]) {
@@ -143,7 +140,6 @@ function applyLanguage(lang) {
   });
 }
 
-// დროშებზე დაწკაპუნების მოვლენა
 langBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     const targetLang = btn.getAttribute("data-lang");
@@ -154,20 +150,21 @@ langBtns.forEach((btn) => {
   });
 });
 
-// საწყისი გაშვება
 applyLanguage(currentLang);
+
 /* =========================================
-   1. CUSTOM CYBERPUNK CURSOR
+   1. CUSTOM CYBERPUNK CURSOR (მხოლოდ Desktop-ზე)
 ========================================= */
 const cursorDot = document.getElementById("cursorDot");
 const cursorRing = document.getElementById("cursorRing");
+const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
 let mouseX = 0,
   mouseY = 0;
 let ringX = 0,
   ringY = 0;
 
-if (cursorDot && cursorRing) {
+if (cursorDot && cursorRing && !isTouchDevice) {
   window.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -198,29 +195,38 @@ if (cursorDot && cursorRing) {
 }
 
 /* =========================================
-   2. MATRIX RAIN ტილო (CANVAS)
+   2. MATRIX RAIN ტილო (CANVAS) - მობილურზე ოპტიმიზებული
 ========================================= */
 const canvas = document.getElementById("matrixCanvas");
 let matrixColor = "#7dcfff";
 
 if (canvas) {
   const ctx = canvas.getContext("2d");
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
-
   const letters = "日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ0123456789ABCDEF<>/{}*";
   const fontSize = 16;
-  let columns = Math.floor(canvas.width / fontSize);
-  let drops = Array(columns).fill(1);
+  let columns = 0;
+  let drops = [];
+  let lastWidth = 0;
 
+  function initMatrix() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    lastWidth = window.innerWidth;
+
+    const newColumns = Math.floor(canvas.width / fontSize);
+    if (newColumns !== columns) {
+      columns = newColumns;
+      drops = Array(columns).fill(1);
+    }
+  }
+
+  initMatrix();
+
+  // მხოლოდ ჰორიზონტალურ გადაბრუნებაზე (Orientation Change) განახლება, რომ სქროლმა არ გააფუჭოს
   window.addEventListener("resize", () => {
-    columns = Math.floor(canvas.width / fontSize);
-    drops = Array(columns).fill(1);
+    if (Math.abs(window.innerWidth - lastWidth) > 30) {
+      initMatrix();
+    }
   });
 
   function drawMatrix() {
@@ -365,7 +371,7 @@ if (sfxToggleBtn) {
 }
 
 function playHoverSound() {
-  if (!sfxEnabled) return;
+  if (!sfxEnabled || isTouchDevice) return;
   if (!sfxAudioCtx) sfxAudioCtx = new AudioCtxClass();
   if (sfxAudioCtx.state === "suspended") sfxAudioCtx.resume();
 
@@ -419,7 +425,7 @@ function playClickSound() {
 
 document
   .querySelectorAll(
-    ".nav-links a, .btn-neon, .btn-primary, .btn-secondary, .card, .tag, .social-link, .btn-scroll-top, .modal-close, .theme-dot, .lang-toggle-btn",
+    ".nav-links a, .btn-neon, .btn-primary, .btn-secondary, .card, .tag, .social-link, .btn-scroll-top, .modal-close, .theme-dot, .lang-btn",
   )
   .forEach((el) => {
     el.addEventListener("mouseenter", playHoverSound);
@@ -566,28 +572,43 @@ const resumeBtn = document.getElementById("resumeBtn");
 const resumeModal = document.getElementById("resumeModal");
 const closeResumeBtn = document.getElementById("closeResumeBtn");
 
-function openModal() {
-  if (modal) modal.classList.add("active");
-}
-function closeModal() {
-  if (modal) modal.classList.remove("active");
+function openModal(targetModal) {
+  if (targetModal) {
+    targetModal.classList.add("active");
+    document.body.style.overflow = "hidden"; // მობილურზე ფონის სქროლის დაბლოკვა
+  }
 }
 
-if (contactBtn) contactBtn.addEventListener("click", openModal);
-if (mobileConnectBtn) mobileConnectBtn.addEventListener("click", openModal);
-if (closeBtn) closeBtn.addEventListener("click", closeModal);
+function closeModal(targetModal) {
+  if (targetModal) {
+    targetModal.classList.remove("active");
+  } else {
+    if (modal) modal.classList.remove("active");
+    if (resumeModal) resumeModal.classList.remove("active");
+  }
+  document.body.style.overflow = ""; // სქროლის აღდგენა
+}
+
+if (contactBtn) contactBtn.addEventListener("click", () => openModal(modal));
+if (mobileConnectBtn) {
+  mobileConnectBtn.addEventListener("click", () => {
+    // მენიუს დახურვა და მოდალის გახსნა
+    if (hamburgerBtn && navLinks) {
+      hamburgerBtn.classList.remove("active");
+      navLinks.classList.remove("active");
+    }
+    openModal(modal);
+  });
+}
+if (closeBtn) closeBtn.addEventListener("click", () => closeModal(modal));
 if (resumeBtn && resumeModal)
-  resumeBtn.addEventListener("click", () =>
-    resumeModal.classList.add("active"),
-  );
+  resumeBtn.addEventListener("click", () => openModal(resumeModal));
 if (closeResumeBtn && resumeModal)
-  closeResumeBtn.addEventListener("click", () =>
-    resumeModal.classList.remove("active"),
-  );
+  closeResumeBtn.addEventListener("click", () => closeModal(resumeModal));
 
 window.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
-  if (e.target === resumeModal) resumeModal.classList.remove("active");
+  if (e.target === modal) closeModal(modal);
+  if (e.target === resumeModal) closeModal(resumeModal);
 });
 
 const scrollTopBtn = document.getElementById("scrollTopBtn");
@@ -597,21 +618,23 @@ if (scrollTopBtn) {
   );
 }
 
-// 3D Tilt ბარათებზე
-document.querySelectorAll(".card, .showcase-card").forEach((card) => {
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6;
-    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+// 3D Tilt ბარათებზე (მხოლოდ Desktop მაუსისთვის)
+if (!isTouchDevice) {
+  document.querySelectorAll(".card, .showcase-card").forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -5;
+      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 5;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform =
+        "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    });
   });
-  card.addEventListener("mouseleave", () => {
-    card.style.transform =
-      "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-  });
-});
+}
 
 // Scroll Reveal
 const revealElements = document.querySelectorAll(".reveal");
@@ -625,31 +648,48 @@ if ("IntersectionObserver" in window) {
         }
       });
     },
-    { threshold: 0.15 },
+    { threshold: 0.12 },
   );
   revealElements.forEach((el) => revealObserver.observe(el));
 } else {
   revealElements.forEach((el) => el.classList.add("active"));
 }
 
-// მობილურის ჰამბურგერ მენიუ
+/* =========================================
+   8. მობილურის ჰამბურგერ მენიუ (OUTSIDE CLICK)
+========================================= */
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const navLinks = document.getElementById("navLinks");
+
 if (hamburgerBtn && navLinks) {
-  hamburgerBtn.addEventListener("click", () => {
+  hamburgerBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
     hamburgerBtn.classList.toggle("active");
     navLinks.classList.toggle("active");
   });
+
   navLinks.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
       hamburgerBtn.classList.remove("active");
       navLinks.classList.remove("active");
     });
   });
+
+  // ეკრანის ცარიელ ადგილზე დაჭერისას მენიუს დახურვა
+  document.addEventListener("click", (e) => {
+    if (
+      navLinks.classList.contains("active") &&
+      !navLinks.contains(e.target) &&
+      !hamburgerBtn.contains(e.target)
+    ) {
+      hamburgerBtn.classList.remove("active");
+      navLinks.classList.remove("active");
+    }
+  });
 }
 
 /* =========================================
-   16. HACKER TEXT SCRAMBLE EFFECT (სუფთა და უშეცდომო)
+   9. HACKER TEXT SCRAMBLE EFFECT
 ========================================= */
 const chars = "!<>-_\\/[]{}—=+*^?#_010101";
 
@@ -700,7 +740,6 @@ class TextScramble {
         displayChar = `<span style="color: var(--neon-primary); opacity: 0.9;">${char}</span>`;
       }
 
-      // ლოგოს სიმბოლოებს ვყოფთ თეგების გაჭრის გარეშე: პირველი 4 NEON, ბოლო 3 DEV
       if (this.isLogo) {
         if (i < 4) {
           neonPart += displayChar;
@@ -736,7 +775,6 @@ class TextScramble {
   }
 }
 
-// გაშვება მხოლოდ გვერდის ჩატვირთვისას
 window.addEventListener("DOMContentLoaded", () => {
   const scrambleTargets = document.querySelectorAll(
     ".gradient-text, .page-title span, .logo",
@@ -749,8 +787,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 300);
   });
 });
+
 /* =========================================
-   17. რეალური საკონტაქტო ფორმის გაგზავნა (AJAX)
+   10. რეალური საკონტაქტო ფორმის გაგზავნა (AJAX)
 ========================================= */
 const contactForm = document.getElementById("contactForm");
 const formStatus = document.getElementById("formStatus");
@@ -787,8 +826,8 @@ if (contactForm) {
         contactForm.reset();
 
         setTimeout(() => {
-          formStatus.style.display = "none";
-          closeModal();
+          formStatus.className = "form-status";
+          closeModal(modal);
         }, 2500);
       } else {
         throw new Error();

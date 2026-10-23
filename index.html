@@ -37,7 +37,7 @@
           id="audioPlayer"
           title="Cyberpunk Ambient Player"
         >
-          <button class="player-btn" id="playToggleBtn">
+          <button class="player-btn" id="playToggleBtn" aria-label="Play Lo-Fi">
             <span class="player-icon" id="playerIcon">&#9658;</span>
           </button>
           <div class="visualizer" id="visualizer">
@@ -54,14 +54,20 @@
           class="sfx-toggle-btn"
           id="sfxToggleBtn"
           title="UI ხმების ჩართვა/გამორთვა"
+          aria-label="Toggle SFX"
         >
           <span id="sfxIcon">&#128266;</span>
         </button>
 
         <!-- ენის გადამრთველი HUD პანელი (დროშებით) -->
         <div class="lang-switcher" title="ენის შეცვლა / Switch Language">
-          <button class="lang-btn active" data-lang="ka" title="ქართული">
-            <svg class="flag-icon" viewBox="0 0 60 40">
+          <button
+            class="lang-btn active"
+            data-lang="ka"
+            title="ქართული"
+            aria-label="ქართული"
+          >
+            <svg class="flag-icon" viewBox="0 0 60 40" width="20" height="14">
               <rect width="60" height="40" fill="#f0f4fc" rx="2" />
               <path d="M0 16h60v8H0z M26 0h8v40h-8z" fill="#ff2a55" />
               <path d="M10 6h6v8h-6z M9 7h8v6h-8z" fill="#ff2a55" />
@@ -70,8 +76,13 @@
               <path d="M44 26h6v8h-6z M43 27h8v6h-8z" fill="#ff2a55" />
             </svg>
           </button>
-          <button class="lang-btn" data-lang="en" title="English">
-            <svg class="flag-icon" viewBox="0 0 60 30">
+          <button
+            class="lang-btn"
+            data-lang="en"
+            title="English"
+            aria-label="English"
+          >
+            <svg class="flag-icon" viewBox="0 0 60 30" width="20" height="14">
               <clipPath id="uk-clip">
                 <rect width="60" height="30" rx="2" />
               </clipPath>
@@ -93,22 +104,26 @@
             </svg>
           </button>
         </div>
+
         <!-- თემების გადამრთველი HUD პანელი -->
         <div class="theme-switcher" title="ნეონის თემის შეცვლა">
           <button
             class="theme-dot active"
             data-theme="tokyo"
             title="Tokyo Night"
+            aria-label="Tokyo Night Theme"
           ></button>
           <button
             class="theme-dot"
             data-theme="cyber"
             title="Cyberpunk 2077"
+            aria-label="Cyberpunk Theme"
           ></button>
           <button
             class="theme-dot"
             data-theme="matrix"
             title="Matrix Protocol"
+            aria-label="Matrix Theme"
           ></button>
         </div>
       </div>
@@ -160,11 +175,7 @@
       </p>
 
       <div class="hero-actions">
-        <a
-          href="projects.html"
-          class="btn-primary"
-          style="text-decoration: none; display: inline-block"
-          data-i18n="viewProjectsBtn"
+        <a href="projects.html" class="btn-primary" data-i18n="viewProjectsBtn"
           >ნახე პროექტები</a
         >
         <button class="btn-secondary" id="resumeBtn" data-i18n="resumeBtn">
@@ -415,7 +426,7 @@
 
     <!-- რეზიუმეს მოდალი -->
     <div class="modal-overlay" id="resumeModal">
-      <div class="modal-box" style="max-width: 550px">
+      <div class="modal-box modal-resume">
         <button class="modal-close" id="closeResumeBtn">&times;</button>
         <h3 class="modal-title">
           <span data-i18n="resumeModalTitle1">ჩემი</span>
@@ -425,17 +436,7 @@
           მოკლე პროფესიული შეჯამება და უნარები
         </p>
 
-        <div
-          style="
-            background: rgba(15, 17, 26, 0.8);
-            padding: 18px;
-            border-radius: 8px;
-            border: 1px solid rgba(122, 162, 247, 0.2);
-            font-size: 13px;
-            line-height: 1.7;
-            margin-bottom: 20px;
-          "
-        >
+        <div class="resume-info-box">
           <p>
             <strong style="color: var(--neon-primary)" data-i18n="cvPosLabel"
               >პოზიცია:</strong
