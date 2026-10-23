@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>პროექტები | NEONDEV</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      const t = localStorage.getItem("selectedTheme");
+      if (t === "cyber") {
+        document.documentElement.classList.add("theme-cyber");
+        document.body?.classList.add("theme-cyber");
+      }
+      if (t === "matrix") {
+        document.documentElement.classList.add("theme-matrix");
+        document.body?.classList.add("theme-matrix");
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Custom Cyberpunk კურსორი -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Matrix Rain ფონი -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- ნავიგაცია -->
+    <header class="navbar">
+      <div class="logo">NEON<span>DEV</span></div>
+
+      <div class="audio-controls-wrap">
+        <div
+          class="audio-player"
+          id="audioPlayer"
+          title="Cyberpunk Ambient Player"
+        >
+          <button class="player-btn" id="playToggleBtn">
+            <span class="player-icon" id="playerIcon">&#9658;</span>
+          </button>
+          <div class="visualizer" id="visualizer">
+            <span class="v-bar"></span>
+            <span class="v-bar"></span>
+            <span class="v-bar"></span>
+            <span class="v-bar"></span>
+          </div>
+          <span class="track-title">CYBER_LOFI.FM</span>
+        </div>
+
+        <button
+          class="sfx-toggle-btn"
+          id="sfxToggleBtn"
+          title="UI ხმების ჩართვა/გამორთვა"
+        >
+          <span id="sfxIcon">&#128266;</span>
+        </button>
+
+        <!-- ენის გადამრთველი HUD პანელი (დროშებით) -->
+        <div class="lang-switcher" title="ენის შეცვლა / Switch Language">
+          <button class="lang-btn active" data-lang="ka" title="ქართული">
+            <svg class="flag-icon" viewBox="0 0 60 40">
+              <rect width="60" height="40" fill="#f0f4fc" rx="2" />
+              <path d="M0 16h60v8H0z M26 0h8v40h-8z" fill="#ff2a55" />
+              <path d="M10 6h6v8h-6z M9 7h8v6h-8z" fill="#ff2a55" />
+              <path d="M44 6h6v8h-6z M43 7h8v6h-8z" fill="#ff2a55" />
+              <path d="M10 26h6v8h-6z M9 27h8v6h-8z" fill="#ff2a55" />
+              <path d="M44 26h6v8h-6z M43 27h8v6h-8z" fill="#ff2a55" />
+            </svg>
+          </button>
+          <button class="lang-btn" data-lang="en" title="English">
+            <svg class="flag-icon" viewBox="0 0 60 30">
+              <clipPath id="uk-clip-p">
+                <rect width="60" height="30" rx="2" />
+              </clipPath>
+              <g clip-path="url(#uk-clip-p)">
+                <path d="M0 0v30h60V0z" fill="#012169" />
+                <path
+                  d="M0 0l60 30m0-30L0 30"
+                  stroke="#f0f4fc"
+                  stroke-width="6"
+                />
+                <path
+                  d="M0 0l60 30m0-30L0 30"
+                  stroke="#ff2a55"
+                  stroke-width="3"
+                />
+                <path d="M30 0v30M0 15h60" stroke="#f0f4fc" stroke-width="10" />
+                <path d="M30 0v30M0 15h60" stroke="#ff2a55" stroke-width="6" />
+              </g>
+            </svg>
+          </button>
+        </div>
+
+        <div class="theme-switcher" title="ნეონის თემის შეცვლა">
+          <button
+            class="theme-dot active"
+            data-theme="tokyo"
+            title="Tokyo Night"
+          ></button>
+          <button
+            class="theme-dot"
+            data-theme="cyber"
+            title="Cyberpunk 2077"
+          ></button>
+          <button
+            class="theme-dot"
+            data-theme="matrix"
+            title="Matrix Protocol"
+          ></button>
+        </div>
+      </div>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-i18n="navBack">&larr; მთავარი</a></li>
+        <li><a href="index.html#about" data-i18n="navAbout">ჩემ შესახებ</a></li>
+        <li>
+          <a
+            href="projects.html"
+            style="color: var(--neon-primary)"
+            data-i18n="navProjects"
+            >პროექტები</a
+          >
+        </li>
+        <li>
+          <a href="index.html#terminal" data-i18n="navTerminal">ტერმინალი</a>
+        </li>
+        <li class="mobile-btn-wrap">
+          <button class="btn-neon btn-mobile-connect" data-i18n="connectBtn">
+            დაკავშირება
+          </button>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <button class="btn-neon nav-desktop-btn" data-i18n="connectBtn">
+          დაკავშირება
+        </button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="მენიუ">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- პროექტების ვიტრინის სექცია -->
+    <main class="projects-page">
+      <div class="projects-header reveal">
+        <div class="badge">ARCHIVE // V1.0</div>
+        <h1 class="page-title">
+          <span data-i18n="projectsPageTitle1">რჩეული</span>
+          <span data-i18n="projectsPageTitle2">პროექტები</span>
+        </h1>
+        <p class="page-subtitle" data-i18n="projectsPageSubtitle">
+          ინტერაქციული ვებ-აპლიკაციები, კიბერპანკ ინტერფეისები და ექსპერიმენტული
+          UI სისტემები.
+        </p>
+      </div>
+
+      <div class="showcase-list">
+        <!-- პროექტი: Tokyo OS -->
+        <article class="showcase-card reveal">
+          <div class="showcase-preview">
+            <div class="preview-mockup">
+              <span class="mockup-tag">FEATURED PROJECT</span>
+              <div class="mockup-screen">
+                <span class="screen-icon">&#128421;</span>
+                <p>Tokyo OS &bull; Desktop Environment</p>
+              </div>
+            </div>
+          </div>
+          <div class="showcase-info">
+            <div class="showcase-tags">
+              <span class="tag">HTML5 / CSS3</span>
+              <span class="tag">Vanilla JS</span>
+              <span class="tag">Web Audio API</span>
+              <span class="tag">i18n Engine</span>
+            </div>
+            <h2>Tokyo OS (by NEONDEV)</h2>
+            <p data-i18n="proj1Desc">
+              ბრაუზერში გაშვებული კიბერპანკ სამუშაო გარემო მრავალფანჯრიანი
+              სისტემით, Tokyo Night თემით, ანიმაციებითა და სისტემური
+              მონიტორინგის ფუნქციებით.
+            </p>
+            <div class="showcase-actions">
+              <a href="#" class="btn-primary">Live Demo &rarr;</a>
+              <a href="https://github.com" class="btn-secondary" target="_blank"
+                >Source Code</a
+              >
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- ფუტერი -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <div class="logo">NEON<span>DEV</span></div>
+          <p data-i18n="footerDesc">
+            თანამედროვე ციფრული გადაწყვეტილებები და ინტერაქციული
+            ვებ-გამოცდილება.
+          </p>
+        </div>
+        <div class="footer-socials">
+          <a href="https://github.com" target="_blank" class="social-link"
+            >GitHub</a
+          >
+          <a href="https://linkedin.com" target="_blank" class="social-link"
+            >LinkedIn</a
+          >
+          <a href="https://x.com" target="_blank" class="social-link">X</a>
+        </div>
+        <div class="footer-action">
+          <button
+            id="scrollTopBtn"
+            class="btn-scroll-top"
+            title="ზემოთ დაბრუნება"
+          >
+            &#8593;
+          </button>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footerCopy">&copy; 2026 NEONDEV. ყველა უფლება დაცულია.</p>
+      </div>
+    </footer>
+
+    <!-- მოდალი -->
+    <div class="modal-overlay" id="contactModal">
+      <div class="modal-box">
+        <button class="modal-close" id="closeBtn">&times;</button>
+        <h3 class="modal-title">
+          <span data-i18n="modalContactTitle1">მოდი</span>
+          <span data-i18n="modalContactTitle2">დავუკავშირდეთ</span>
+        </h3>
+        <p class="modal-desc" data-i18n="modalContactDesc">
+          გაქვს საინტერესო იდეა ან პროექტი? მომწერე ნებისმიერ დროს.
+        </p>
+        <form class="modal-form" id="contactForm">
+          <div class="input-group">
+            <label data-i18n="labelName">სახელი</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="თქვენი სახელი"
+              data-i18n-ph="phName"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label data-i18n="labelEmail">ელ-ფოსტა</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label data-i18n="labelMsg">შეტყობინება</label>
+            <textarea
+              name="message"
+              rows="3"
+              placeholder="მოკლედ თქვენი იდეის შესახებ..."
+              data-i18n-ph="phMsg"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-status" id="formStatus"></div>
+
+          <button
+            type="submit"
+            class="btn-primary modal-submit"
+            id="submitBtn"
+            data-i18n="sendBtn"
+          >
+            გაგზავნა
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

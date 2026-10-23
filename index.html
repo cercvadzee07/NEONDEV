@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Tokyo Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      const t = localStorage.getItem("selectedTheme");
+      if (t === "cyber") {
+        document.documentElement.classList.add("theme-cyber");
+        document.body?.classList.add("theme-cyber");
+      }
+      if (t === "matrix") {
+        document.documentElement.classList.add("theme-matrix");
+        document.body?.classList.add("theme-matrix");
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Custom Cyberpunk კურსორის ელემენტები -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- 1. Matrix Rain-ის ფონი (მთელ ეკრანზე) -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- ზედა ნავიგაცია -->
+    <header class="navbar">
+      <div class="logo">NEON<span>DEV</span></div>
+
+      <!-- Cyberpunk მინი-აუდიო, SFX, ენის და თემების გადამრთველი -->
+      <div class="audio-controls-wrap">
+        <div
+          class="audio-player"
+          id="audioPlayer"
+          title="Cyberpunk Ambient Player"
+        >
+          <button class="player-btn" id="playToggleBtn">
+            <span class="player-icon" id="playerIcon">&#9658;</span>
+          </button>
+          <div class="visualizer" id="visualizer">
+            <span class="v-bar"></span>
+            <span class="v-bar"></span>
+            <span class="v-bar"></span>
+            <span class="v-bar"></span>
+          </div>
+          <span class="track-title">CYBER_LOFI.FM</span>
+        </div>
+
+        <!-- UI ხმების გადამრთველი -->
+        <button
+          class="sfx-toggle-btn"
+          id="sfxToggleBtn"
+          title="UI ხმების ჩართვა/გამორთვა"
+        >
+          <span id="sfxIcon">&#128266;</span>
+        </button>
+
+        <!-- ენის გადამრთველი HUD პანელი (დროშებით) -->
+        <div class="lang-switcher" title="ენის შეცვლა / Switch Language">
+          <button class="lang-btn active" data-lang="ka" title="ქართული">
+            <svg class="flag-icon" viewBox="0 0 60 40">
+              <rect width="60" height="40" fill="#f0f4fc" rx="2" />
+              <path d="M0 16h60v8H0z M26 0h8v40h-8z" fill="#ff2a55" />
+              <path d="M10 6h6v8h-6z M9 7h8v6h-8z" fill="#ff2a55" />
+              <path d="M44 6h6v8h-6z M43 7h8v6h-8z" fill="#ff2a55" />
+              <path d="M10 26h6v8h-6z M9 27h8v6h-8z" fill="#ff2a55" />
+              <path d="M44 26h6v8h-6z M43 27h8v6h-8z" fill="#ff2a55" />
+            </svg>
+          </button>
+          <button class="lang-btn" data-lang="en" title="English">
+            <svg class="flag-icon" viewBox="0 0 60 30">
+              <clipPath id="uk-clip">
+                <rect width="60" height="30" rx="2" />
+              </clipPath>
+              <g clip-path="url(#uk-clip)">
+                <path d="M0 0v30h60V0z" fill="#012169" />
+                <path
+                  d="M0 0l60 30m0-30L0 30"
+                  stroke="#f0f4fc"
+                  stroke-width="6"
+                />
+                <path
+                  d="M0 0l60 30m0-30L0 30"
+                  stroke="#ff2a55"
+                  stroke-width="3"
+                />
+                <path d="M30 0v30M0 15h60" stroke="#f0f4fc" stroke-width="10" />
+                <path d="M30 0v30M0 15h60" stroke="#ff2a55" stroke-width="6" />
+              </g>
+            </svg>
+          </button>
+        </div>
+        <!-- თემების გადამრთველი HUD პანელი -->
+        <div class="theme-switcher" title="ნეონის თემის შეცვლა">
+          <button
+            class="theme-dot active"
+            data-theme="tokyo"
+            title="Tokyo Night"
+          ></button>
+          <button
+            class="theme-dot"
+            data-theme="cyber"
+            title="Cyberpunk 2077"
+          ></button>
+          <button
+            class="theme-dot"
+            data-theme="matrix"
+            title="Matrix Protocol"
+          ></button>
+        </div>
+      </div>
+
+      <!-- ლინკები -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" data-i18n="navHome">მთავარი</a></li>
+        <li><a href="#about" data-i18n="navAbout">ჩემ შესახებ</a></li>
+        <li><a href="projects.html" data-i18n="navProjects">პროექტები</a></li>
+        <li><a href="#terminal" data-i18n="navTerminal">ტერმინალი</a></li>
+        <li class="mobile-btn-wrap">
+          <button class="btn-neon btn-mobile-connect" data-i18n="connectBtn">
+            დაკავშირება
+          </button>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <button class="btn-neon nav-desktop-btn" data-i18n="connectBtn">
+          დაკავშირება
+        </button>
+
+        <!-- ჰამბურგერ ღილაკი -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="მენიუ">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO სექცია -->
+    <main class="hero" id="home">
+      <div class="badge">
+        <span class="pulse-dot"></span>
+        <span data-i18n="heroBadge">ხელმისაწვდომია ახალი პროექტებისთვის</span>
+      </div>
+
+      <h1 class="hero-title">
+        <span data-i18n="heroTitle1">ვაშენებ თანამედროვე</span> <br />
+        <span class="gradient-text" data-i18n="heroTitle2"
+          >ციფრულ გამოცდილებას</span
+        >
+      </h1>
+
+      <p class="hero-desc" data-i18n="heroDesc">
+        Front-end დეველოპმენტი და ინტერაქციული UI დიზაინი. სუფთა კოდი, მაღალი
+        წარმადობა და გამორჩეული ნეონის ესთეტიკა.
+      </p>
+
+      <div class="hero-actions">
+        <a
+          href="projects.html"
+          class="btn-primary"
+          style="text-decoration: none; display: inline-block"
+          data-i18n="viewProjectsBtn"
+          >ნახე პროექტები</a
+        >
+        <button class="btn-secondary" id="resumeBtn" data-i18n="resumeBtn">
+          ჩემი რეზიუმე
+        </button>
+      </div>
+    </main>
+
+    <!-- „ჩემ შესახებ & SKILLS“ სექცია -->
+    <section class="about-section" id="about">
+      <h2 class="section-title reveal">
+        <span data-i18n="aboutTitle1">ჩემ</span>
+        <span data-i18n="aboutTitle2">შესახებ</span>
+      </h2>
+
+      <div class="about-grid">
+        <!-- მარცხენა სვეტი: ბიო და სტატისტიკა -->
+        <div class="about-card reveal">
+          <div class="avatar-wrapper">
+            <div class="avatar-glow"></div>
+            <div class="avatar-box">
+              <span class="avatar-code">&lt;/&gt;</span>
+            </div>
+          </div>
+
+          <h3 class="about-name">Creative Front-End Developer</h3>
+          <p class="about-text" data-i18n="aboutText">
+            ვქმნი თანამედროვე, სწრაფ და ვიზუალურად გამორჩეულ ციფრულ
+            ინტერფეისებს. განსაკუთრებულ ყურადღებას ვუთმობ დეტალებს,
+            მიკრო-ინტერაქციებს, სუფთა არქიტექტურასა და კიბერპანკ/Tokyo Night
+            ესთეტიკას.
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Responsive UI</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">0</div>
+              <div class="stat-label">Dependencies</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">&infin;</div>
+              <div class="stat-label">Passion to Code</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- მარჯვენა სვეტი: ტექნოლოგიური სტეკი -->
+        <div class="skills-card reveal">
+          <h3 class="skills-heading">Core <span>Technologies</span></h3>
+          <p class="skills-desc" data-i18n="skillsDesc">
+            ტექნოლოგიები და ხელსაწყოები, რომლებსაც ყოველდღიურად ვიყენებ:
+          </p>
+
+          <div class="skills-list">
+            <div class="skill-item">
+              <div class="skill-info">
+                <span>HTML5 / Semantic Layouts</span>
+                <span class="skill-pct">95%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="--w: 95%"></div>
+              </div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-info">
+                <span>Modern CSS / Flexbox & Grid / Canvas</span>
+                <span class="skill-pct">90%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="--w: 90%"></div>
+              </div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-info">
+                <span>Vanilla JavaScript / Web Audio API</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="--w: 85%"></div>
+              </div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-info">
+                <span>Git & GitHub Workflow</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="--w: 80%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-tags">
+            <span class="tag">Linux</span>
+            <span class="tag">Hyprland</span>
+            <span class="tag">Tokyo Night</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">UI/UX</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- მინი-ტერმინალის სექცია -->
+    <section class="terminal-section" id="terminal">
+      <h2 class="section-title reveal">
+        <span data-i18n="termTitle1">ინტერაქციული</span>
+        <span data-i18n="termTitle2">ტერმინალი</span>
+      </h2>
+
+      <div class="terminal-window reveal">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="terminal-title">guest@tokyo-night:~</div>
+        </div>
+
+        <div class="terminal-body" id="terminalOutput">
+          <div class="term-line system-msg">
+            Tokyo Night Cyberpunk OS [Version 1.0.4]
+          </div>
+          <div
+            class="term-line system-msg"
+            id="termWelcomeMsg"
+            data-i18n="termWelcome"
+          >
+            სისტემა მზადაა. აკრიფე
+            <span class="cmd-highlight">help</span> ბრძანებების სიისთვის.
+          </div>
+        </div>
+
+        <div class="terminal-input-bar">
+          <span class="terminal-prompt">guest@tokyo-night:~$</span>
+          <input
+            type="text"
+            id="terminalInput"
+            placeholder="..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ფუტერი -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <div class="logo">NEON<span>DEV</span></div>
+          <p data-i18n="footerDesc">
+            თანამედროვე ციფრული გადაწყვეტილებები და ინტერაქციული
+            ვებ-გამოცდილება.
+          </p>
+        </div>
+
+        <div class="footer-socials">
+          <a href="https://github.com" target="_blank" class="social-link"
+            >GitHub</a
+          >
+          <a href="https://linkedin.com" target="_blank" class="social-link"
+            >LinkedIn</a
+          >
+          <a href="https://x.com" target="_blank" class="social-link">X</a>
+        </div>
+
+        <div class="footer-action">
+          <button
+            id="scrollTopBtn"
+            class="btn-scroll-top"
+            title="ზემოთ დაბრუნება"
+          >
+            &#8593;
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p data-i18n="footerCopy">&copy; 2026 NEONDEV. ყველა უფლება დაცულია.</p>
+      </div>
+    </footer>
+
+    <!-- საკონტაქტო მოდალური ფანჯარა -->
+    <div class="modal-overlay" id="contactModal">
+      <div class="modal-box">
+        <button class="modal-close" id="closeBtn">&times;</button>
+
+        <h3 class="modal-title">
+          <span data-i18n="modalContactTitle1">მოდი</span>
+          <span data-i18n="modalContactTitle2">დავუკავშირდეთ</span>
+        </h3>
+        <p class="modal-desc" data-i18n="modalContactDesc">
+          გაქვს საინტერესო იდეა ან პროექტი? მომწერე ნებისმიერ დროს.
+        </p>
+
+        <form class="modal-form" id="contactForm">
+          <div class="input-group">
+            <label data-i18n="labelName">სახელი</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="თქვენი სახელი"
+              data-i18n-ph="phName"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label data-i18n="labelEmail">ელ-ფოსტა</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label data-i18n="labelMsg">შეტყობინება</label>
+            <textarea
+              name="message"
+              rows="3"
+              placeholder="მოკლედ თქვენი იდეის შესახებ..."
+              data-i18n-ph="phMsg"
+              required
+            ></textarea>
+          </div>
+
+          <!-- სტატუსის კიბერ-შეტყობინება -->
+          <div class="form-status" id="formStatus"></div>
+
+          <button
+            type="submit"
+            class="btn-primary modal-submit"
+            id="submitBtn"
+            data-i18n="sendBtn"
+          >
+            გაგზავნა
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- რეზიუმეს მოდალი -->
+    <div class="modal-overlay" id="resumeModal">
+      <div class="modal-box" style="max-width: 550px">
+        <button class="modal-close" id="closeResumeBtn">&times;</button>
+        <h3 class="modal-title">
+          <span data-i18n="resumeModalTitle1">ჩემი</span>
+          <span data-i18n="resumeModalTitle2">რეზიუმე / CV</span>
+        </h3>
+        <p class="modal-desc" data-i18n="resumeModalDesc">
+          მოკლე პროფესიული შეჯამება და უნარები
+        </p>
+
+        <div
+          style="
+            background: rgba(15, 17, 26, 0.8);
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(122, 162, 247, 0.2);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+          "
+        >
+          <p>
+            <strong style="color: var(--neon-primary)" data-i18n="cvPosLabel"
+              >პოზიცია:</strong
+            >
+            Junior / Mid Front-End Developer
+          </p>
+          <p>
+            <strong
+              style="color: var(--neon-secondary)"
+              data-i18n="cvStackLabel"
+              >სტეკი:</strong
+            >
+            HTML5, Modern CSS, Vanilla JS, Web APIs, Git
+          </p>
+          <p>
+            <strong style="color: #9ece6a" data-i18n="cvFocusLabel"
+              >ფოკუსი:</strong
+            >
+            <span data-i18n="cvFocusVal"
+              >ინტერაქციული UI/UX, Cyberpunk ესთეტიკა, სუფთა არქიტექტურა</span
+            >
+          </p>
+        </div>
+
+        <button
+          class="btn-primary"
+          style="width: 100%"
+          onclick="
+            alert(
+              currentLang === 'ka'
+                ? 'რეალური PDF ფაილის დამატების შემდეგ დაიწყება გადმოწერა!'
+                : 'Download will start once a real PDF file is linked!',
+            )
+          "
+          data-i18n="downloadCvBtn"
+        >
+          PDF რეზიუმეს ჩამოტვირთვა
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
