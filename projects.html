@@ -28,7 +28,6 @@
 
     <!-- ნავიგაცია -->
     <header class="navbar">
-      <div class="menu-backdrop" id="menuBackdrop"></div>
       <div class="logo">NEON<span>DEV</span></div>
 
       <div class="audio-controls-wrap">
@@ -183,15 +182,8 @@
                 src="tokyo-os-preview.png"
                 alt="Tokyo OS Preview"
                 class="mockup-img"
-                onerror="
-                  this.style.display = 'none';
-                  this.nextElementSibling.style.display = 'block';
-                "
+                loading="lazy"
               />
-              <div class="mockup-screen" style="display: none; padding: 20px">
-                <span class="screen-icon">&#128421;</span>
-                <p>Tokyo OS Cyberpunk Interface</p>
-              </div>
               <div class="mockup-overlay"></div>
             </div>
           </div>

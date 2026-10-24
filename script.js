@@ -656,44 +656,38 @@ if ("IntersectionObserver" in window) {
 }
 
 /* =========================================
-   8. მობილურის ჰამბურგერ მენიუ & BACKDROP
+   8. მობილურის ჰამბურგერ მენიუ (OUTSIDE CLICK)
 ========================================= */
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const navLinks = document.getElementById("navLinks");
-const menuBackdrop = document.getElementById("menuBackdrop");
-
-function closeMobileMenu() {
-  if (hamburgerBtn) hamburgerBtn.classList.remove("active");
-  if (navLinks) navLinks.classList.remove("active");
-  if (menuBackdrop) menuBackdrop.classList.remove("active");
-  document.body.style.overflow = "";
-}
-
-function openMobileMenu() {
-  if (hamburgerBtn) hamburgerBtn.classList.add("active");
-  if (navLinks) navLinks.classList.add("active");
-  if (menuBackdrop) menuBackdrop.classList.add("active");
-  document.body.style.overflow = "hidden";
-}
 
 if (hamburgerBtn && navLinks) {
   hamburgerBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    if (navLinks.classList.contains("active")) {
-      closeMobileMenu();
-    } else {
-      openMobileMenu();
-    }
+    hamburgerBtn.classList.toggle("active");
+    navLinks.classList.toggle("active");
   });
 
   navLinks.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMobileMenu);
+    link.addEventListener("click", () => {
+      hamburgerBtn.classList.remove("active");
+      navLinks.classList.remove("active");
+    });
   });
 
-  if (menuBackdrop) {
-    menuBackdrop.addEventListener("click", closeMobileMenu);
-  }
+  // ეკრანის ცარიელ ადგილზე დაჭერისას მენიუს დახურვა
+  document.addEventListener("click", (e) => {
+    if (
+      navLinks.classList.contains("active") &&
+      !navLinks.contains(e.target) &&
+      !hamburgerBtn.contains(e.target)
+    ) {
+      hamburgerBtn.classList.remove("active");
+      navLinks.classList.remove("active");
+    }
+  });
 }
+
 /* =========================================
    9. HACKER TEXT SCRAMBLE EFFECT
 ========================================= */

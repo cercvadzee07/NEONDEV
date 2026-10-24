@@ -1404,33 +1404,25 @@ body {
 }
 
 /* =========================================
-   RESPONSIVE DESIGN BREAKPOINTS (REFINED)
+   RESPONSIVE DESIGN BREAKPOINTS
 ========================================= */
 
-/* მობილურის მენიუს დაბნელებული ბექდროპი */
-.menu-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(10, 12, 18, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 1040;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+/* 1. ტაბლეტები და მცირე ლეპტოპები (1024px-მდე) */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 14px 24px;
+  }
+  .about-section,
+  .projects {
+    padding: 60px 20px;
+  }
 }
 
-.menu-backdrop.active {
-  opacity: 1;
-  visibility: visible;
-}
-
+/* 2. ტაბლეტები (900px-მდე) */
 @media (max-width: 900px) {
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 28px;
   }
   .showcase-card {
     grid-template-columns: 1fr;
@@ -1438,62 +1430,140 @@ body {
   .showcase-preview {
     border-right: none;
     border-bottom: 1px solid var(--neon-border);
+    padding: 24px;
+  }
+  .preview-mockup {
+    min-height: 240px;
   }
 }
 
+/* 3. მობილურები (768px-მდე) */
 @media (max-width: 768px) {
   .navbar {
-    padding: 10px 16px;
-    gap: 8px;
+    padding: 12px 16px;
   }
-
   .nav-desktop-btn {
     display: none;
   }
-
   .hamburger {
     display: flex;
-    z-index: 1060;
   }
 
-  /* ჰამბურგერის ტრანსფორმაცია "X"-ად გახსნისას */
-  .hamburger.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-  }
-  .hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+  /* სლაიდ-მენიუ */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(78vw, 300px);
+    height: 100vh;
+    background: rgba(15, 17, 26, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid var(--neon-border);
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 40px 30px;
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1050;
   }
 
-  /* მობილურზე ნავბარის ელემენტების სუფთა დალაგება */
+  .nav-links.active {
+    right: 0;
+  }
+
+  .nav-links li {
+    padding: 0;
+    width: 100%;
+  }
+
+  .nav-links li a {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .mobile-btn-wrap {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .mobile-btn-wrap .btn-neon {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
+
+  /* Hero მოქმედებები */
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: 12px;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+  }
+
+  /* ტერმინალი & ბარათები */
+  .terminal-section {
+    padding: 30px 12px 60px;
+  }
+  .terminal-body {
+    padding: 14px;
+    font-size: 12px;
+  }
+  .about-card,
+  .skills-card {
+    padding: 24px;
+  }
+
+  /* ფუტერი */
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .footer-brand {
+    max-width: 100%;
+  }
+  .footer-socials {
+    justify-content: center;
+  }
+
+  /* მობილურზე Custom კურსორის გათიშვა სრულად */
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+}
+
+/* 4. პატარა მობილურები (480px-მდე) */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 12px;
+  }
+
+  .logo {
+    font-size: 17px;
+    letter-spacing: 1px;
+  }
+
   .audio-controls-wrap {
-    gap: 6px;
-  }
-
-  .track-title {
-    display: none; /* CYBER_LOFI.FM ქრება მობილურზე და რჩება მხოლოდ ღილაკი */
+    gap: 5px;
   }
 
   .audio-player {
     padding: 4px 8px;
+    gap: 5px;
   }
 
-  .sfx-toggle-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 11px;
-  }
-
-  .lang-switcher {
-    padding: 3px 5px;
-    gap: 3px;
-  }
-
-  .lang-btn .flag-icon {
-    width: 17px;
-    height: 12px;
+  .track-title {
+    display: none; /* ადგილი თავისუფლდება ლოგოსა და მენიუსთვის */
   }
 
   .theme-switcher {
@@ -1506,81 +1576,35 @@ body {
     height: 11px;
   }
 
-  /* სლაიდ-მენიუ */
-  .nav-links {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 280px;
-    height: 100vh;
-    background: rgba(15, 17, 26, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-left: 1px solid var(--neon-border);
+  .stats-grid {
+    grid-template-columns: 1fr; /* 3 სვეტის ნაცვლად 1 სვეტი კომპაქტური კითხვისთვის */
+    gap: 14px;
+  }
+
+  .showcase-actions {
     flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px;
-    padding: 40px 24px;
-    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1050;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+    width: 100%;
   }
 
-  .nav-links.active {
-    right: 0;
-  }
-
-  .nav-links li a {
-    font-size: 16px;
-    padding: 10px 14px;
-    border-radius: 6px;
-    border: 1px solid transparent;
-  }
-
-  .nav-links li a:hover {
-    background: rgba(125, 207, 255, 0.08);
-    border-color: var(--neon-border);
-  }
-
-  .mobile-btn-wrap {
-    display: block;
-    margin-top: 10px;
-  }
-
-  .mobile-btn-wrap .btn-neon {
+  .showcase-actions a {
     width: 100%;
     text-align: center;
-    padding: 12px;
   }
 
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    gap: 12px;
-  }
-  .hero-actions .btn-primary,
-  .hero-actions .btn-secondary {
-    width: 100%;
-  }
-
-  .cursor-dot,
-  .cursor-ring {
-    display: none !important;
+  .modal-box {
+    padding: 22px 18px;
   }
 }
+.modal-box.modal-resume {
+  max-width: 520px;
+}
 
-@media (max-width: 420px) {
-  .logo {
-    font-size: 16px;
-    letter-spacing: 0.5px;
-  }
-  .theme-switcher {
-    display: none; /* 420px-ზე დაბლა თემები ინაცვლებს მენიუში ან იკუმშება, რომ არაფერი გადაცდეს */
-  }
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+.resume-info-box {
+  background: rgba(15, 17, 26, 0.85);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--neon-border);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 20px;
 }
