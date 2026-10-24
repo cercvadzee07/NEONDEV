@@ -1565,4 +1565,103 @@ body {
   .cursor-ring {
     display: none !important;
   }
+  /* =========================================
+     ჩემ შესახებ & SKILLS: 100% სიმეტრიული სვეტი
+  ========================================= */
+  .about-section {
+    padding: 50px 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .about-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 24px !important;
+  }
+
+  .about-card,
+  .skills-card {
+    width: 100% !important;
+    padding: 24px 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* სტატისტიკის 3 რიცხვი მობილურზე ერთ ხაზზე ლამაზად */
+  .stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .stat-num {
+    font-size: 18px !important;
+  }
+
+  .stat-label {
+    font-size: 10px !important;
+  }
+  /* =========================================
+     PROJECTS SHOWCASE: ვერტიკალური განლაგება
+  ========================================= */
+  .projects-page {
+    padding: 30px 16px 70px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .showcase-card {
+    display: flex !important;
+    flex-direction: column !important; /* სურათი ზემოთ, ტექსტი ქვემოთ */
+    width: 100% !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+
+  .showcase-preview {
+    width: 100% !important;
+    padding: 16px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--neon-border) !important;
+    box-sizing: border-box !important;
+  }
+
+  .preview-mockup {
+    width: 100% !important;
+    height: 200px !important; /* ოპტიმალური სიმაღლე მობილურისთვის */
+    min-height: unset !important;
+  }
+
+  .showcase-info {
+    width: 100% !important;
+    padding: 20px 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  .showcase-info h2 {
+    font-size: 20px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .showcase-info p {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 18px !important;
+  }
+
+  .showcase-actions {
+    display: flex !important;
+    flex-direction: column !important; /* ღილაკები მთელ სიგანეზე მარტივი დაჭერისთვის */
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .showcase-actions a {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 11px 0 !important;
+    box-sizing: border-box !important;
+  }
 }
