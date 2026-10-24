@@ -1363,7 +1363,7 @@ async function navigateTo(url, push = true) {
   }
 }
 
-// ნავბარის დინამიური სინქრონიზაცია SPA გადასვლების დროს
+// ნავბარის დინამიური სინქრონიზაცია SPA გადასვლების დროს (ტერმინალის გარეშე)
 function syncNavbarState() {
   const path = window.location.pathname;
   const isProjects = path.includes("projects.html");
@@ -1373,9 +1373,8 @@ function syncNavbarState() {
   const homeLink = navLinksUl.querySelector('a[href="index.html"]:not(.logo)');
   const projLink = navLinksUl.querySelector('a[href="projects.html"]');
   let aboutLink = navLinksUl.querySelector('a[href="#about"]');
-  let termLink = navLinksUl.querySelector('a[href="#terminal"]');
 
-  // 1. თუ index.html-ზე ვართ და About/Terminal აკლია (რადგან projects-დან დავიწყეთ)
+  // 1. თუ index.html-ზე ვართ და About ლინკი აკლია
   if (!isProjects && !aboutLink) {
     if (homeLink) {
       const li1 = document.createElement("li");
@@ -1383,20 +1382,12 @@ function syncNavbarState() {
       homeLink.parentElement.after(li1);
       aboutLink = li1.querySelector("a");
     }
-    if (projLink) {
-      const li2 = document.createElement("li");
-      li2.innerHTML = `<a href="#terminal" data-i18n="navTerminal">${i18nData[currentLang].navTerminal}</a>`;
-      projLink.parentElement.after(li2);
-      termLink = li2.querySelector("a");
-    }
 
-    // ახალ ლინკებზე ხმის ეფექტების მიბმა
-    [aboutLink, termLink].forEach((el) => {
-      if (el) {
-        el.addEventListener("mouseenter", playHoverSound);
-        el.addEventListener("click", playClickSound);
-      }
-    });
+    // About ლინკზე ხმის ეფექტების მიბმა
+    if (aboutLink) {
+      aboutLink.addEventListener("mouseenter", playHoverSound);
+      aboutLink.addEventListener("click", playClickSound);
+    }
   }
 
   // 2. ვაკონტროლებთ გამოჩენა/დამალვას და "←" ისარს
@@ -1404,15 +1395,13 @@ function syncNavbarState() {
     if (homeLink) homeLink.setAttribute("data-i18n", "navBack");
     if (projLink) projLink.style.color = "var(--neon-primary)";
     if (aboutLink) aboutLink.parentElement.style.display = "none";
-    if (termLink) termLink.parentElement.style.display = "none";
   } else {
     if (homeLink) homeLink.setAttribute("data-i18n", "navHome");
     if (projLink) projLink.style.color = "";
     if (aboutLink) aboutLink.parentElement.style.display = "block";
-    if (termLink) termLink.parentElement.style.display = "block";
   }
 
-  // 3. თარგმანის გადატარება ახალ ტექსტებზე (ისრის მოსაშორებლად/დასამატებლად)
+  // 3. თარგმანის გადატარება
   if (typeof applyLanguage === "function") {
     applyLanguage(currentLang);
   }
