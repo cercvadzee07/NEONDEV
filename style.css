@@ -1665,3 +1665,47 @@ body {
     box-sizing: border-box !important;
   }
 }
+/* =======================================================
+   მობილურის მენიუს თემები & ნავბარის გასუფთავება
+======================================================= */
+/* დესკტოპზე მენიუს შიდა თემები დამალულია */
+.mobile-theme-section {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* 1. ზედა ნავბარიდან თემების დამალვა მობილურზე */
+  .audio-controls-wrap .theme-switcher {
+    display: none !important;
+  }
+
+  /* 2. მობილურის მენიუში თემების გამოჩენა */
+  .mobile-theme-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-top: 15px !important;
+    padding-top: 15px !important;
+    border-top: 1px solid var(--neon-border) !important;
+    width: 100% !important;
+  }
+
+  .mobile-theme-label {
+    font-size: 11px !important;
+    font-family: monospace !important;
+    color: var(--neon-secondary) !important;
+    letter-spacing: 1px !important;
+  }
+
+  .mobile-theme-section .theme-switcher {
+    display: inline-flex !important;
+    align-self: flex-start !important;
+    padding: 6px 12px !important;
+    gap: 10px !important;
+  }
+
+  .mobile-theme-section .theme-dot {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
