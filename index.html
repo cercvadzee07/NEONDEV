@@ -19,18 +19,18 @@
     </script>
   </head>
   <body>
-    <!-- Custom Cyberpunk კურსორის ელემენტები -->
+    <!-- Custom Cyberpunk კურსორი -->
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
 
-    <!-- 1. Matrix Rain-ის ფონი (მთელ ეკრანზე) -->
+    <!-- 1. Matrix Rain ფონი -->
     <canvas id="matrixCanvas"></canvas>
 
     <!-- ზედა ნავიგაცია -->
     <header class="navbar">
-      <div class="logo">NEON<span>DEV</span></div>
+      <a href="index.html" class="logo">NEON<span>DEV</span></a>
 
-      <!-- Cyberpunk მინი-აუდიო, SFX, ენის და თემების გადამრთველი -->
+      <!-- Cyberpunk მინი-აუდიო (Next ღილაკით), ენის და თემების გადამრთველი -->
       <div class="audio-controls-wrap">
         <div
           class="audio-player"
@@ -40,26 +40,24 @@
           <button class="player-btn" id="playToggleBtn" aria-label="Play Lo-Fi">
             <span class="player-icon" id="playerIcon">&#9658;</span>
           </button>
+          <button
+            class="player-btn"
+            id="nextTrackBtn"
+            title="Next Track"
+            aria-label="Next Track"
+          >
+            ⏭
+          </button>
           <div class="visualizer" id="visualizer">
             <span class="v-bar"></span>
             <span class="v-bar"></span>
             <span class="v-bar"></span>
             <span class="v-bar"></span>
           </div>
-          <span class="track-title">CYBER_LOFI.FM</span>
+          <span class="track-title" id="trackTitle">TOKYO_NIGHT.FM</span>
         </div>
 
-        <!-- UI ხმების გადამრთველი -->
-        <button
-          class="sfx-toggle-btn"
-          id="sfxToggleBtn"
-          title="UI ხმების ჩართვა/გამორთვა"
-          aria-label="Toggle SFX"
-        >
-          <span id="sfxIcon">&#128266;</span>
-        </button>
-
-        <!-- ენის გადამრთველი HUD პანელი (დროშებით) -->
+        <!-- ენის გადამრთველი HUD პანელი -->
         <div class="lang-switcher" title="ენის შეცვლა / Switch Language">
           <button
             class="lang-btn active"
@@ -128,16 +126,53 @@
         </div>
       </div>
 
-      <!-- ლინკები -->
+      <!-- Cyberpunk Live HUD Telemetry -->
+      <div class="cyber-hud" id="cyberHud">
+        <span class="hud-item hud-status">
+          <span class="hud-dot"></span>
+          <span id="hudStatus">ONLINE</span>
+        </span>
+        <span class="hud-sep">•</span>
+        <span class="hud-item hud-loc" id="hudLoc">LOC: TBILISI // GE</span>
+        <span class="hud-sep">•</span>
+        <span class="hud-item hud-ping"
+          >PING: <span id="hudPing">--</span>ms</span
+        >
+      </div>
+
+      <!-- ლინკები (ტერმინალის გარეშე) -->
       <ul class="nav-links" id="navLinks">
-        <li><a href="#home" data-i18n="navHome">მთავარი</a></li>
+        <li><a href="index.html" data-i18n="navHome">მთავარი</a></li>
         <li><a href="#about" data-i18n="navAbout">ჩემ შესახებ</a></li>
         <li><a href="projects.html" data-i18n="navProjects">პროექტები</a></li>
-        <li><a href="#terminal" data-i18n="navTerminal">ტერმინალი</a></li>
         <li class="mobile-btn-wrap">
           <button class="btn-neon btn-mobile-connect" data-i18n="connectBtn">
             დაკავშირება
           </button>
+        </li>
+        <!-- თემების გადამრთველი მობილურის მენიუში -->
+        <li class="mobile-theme-section">
+          <span class="mobile-theme-label">SYSTEM THEME</span>
+          <div class="theme-switcher">
+            <button
+              class="theme-dot active"
+              data-theme="tokyo"
+              title="Tokyo Night"
+              aria-label="Tokyo Night"
+            ></button>
+            <button
+              class="theme-dot"
+              data-theme="cyber"
+              title="Cyberpunk 2077"
+              aria-label="Cyberpunk"
+            ></button>
+            <button
+              class="theme-dot"
+              data-theme="matrix"
+              title="Matrix Protocol"
+              aria-label="Matrix"
+            ></button>
+          </div>
         </li>
       </ul>
 
@@ -155,176 +190,186 @@
       </div>
     </header>
 
-    <!-- HERO სექცია -->
-    <main class="hero" id="home">
-      <div class="badge">
-        <span class="pulse-dot"></span>
-        <span data-i18n="heroBadge">ხელმისაწვდომია ახალი პროექტებისთვის</span>
-      </div>
-
-      <h1 class="hero-title">
-        <span data-i18n="heroTitle1">ვაშენებ თანამედროვე</span> <br />
-        <span class="gradient-text" data-i18n="heroTitle2"
-          >ციფრულ გამოცდილებას</span
-        >
-      </h1>
-
-      <p class="hero-desc" data-i18n="heroDesc">
-        Front-end დეველოპმენტი და ინტერაქციული UI დიზაინი. სუფთა კოდი, მაღალი
-        წარმადობა და გამორჩეული ნეონის ესთეტიკა.
-      </p>
-
-      <div class="hero-actions">
-        <a href="projects.html" class="btn-primary" data-i18n="viewProjectsBtn"
-          >ნახე პროექტები</a
-        >
-        <button class="btn-secondary" id="resumeBtn" data-i18n="resumeBtn">
-          ჩემი რეზიუმე
-        </button>
-      </div>
-    </main>
-
-    <!-- „ჩემ შესახებ & SKILLS“ სექცია -->
-    <section class="about-section" id="about">
-      <h2 class="section-title reveal">
-        <span data-i18n="aboutTitle1">ჩემ</span>
-        <span data-i18n="aboutTitle2">შესახებ</span>
-      </h2>
-
-      <div class="about-grid">
-        <!-- მარცხენა სვეტი: ბიო და სტატისტიკა -->
-        <div class="about-card reveal">
-          <div class="avatar-wrapper no-circle">
-            <img src="favicon.svg" alt="NEONDEV Logo" class="avatar-svg-raw" />
-          </div>
-
-          <h3 class="about-name">Creative Front-End Developer</h3>
-          <p class="about-text" data-i18n="aboutText">
-            ვქმნი თანამედროვე, სწრაფ და ვიზუალურად გამორჩეულ ციფრულ
-            ინტერფეისებს. განსაკუთრებულ ყურადღებას ვუთმობ დეტალებს,
-            მიკრო-ინტერაქციებს, სუფთა არქიტექტურასა და კიბერპანკ/Tokyo Night
-            ესთეტიკას.
-          </p>
-
-          <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-num">100%</div>
-              <div class="stat-label">Responsive UI</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">0</div>
-              <div class="stat-label">Dependencies</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">&infin;</div>
-              <div class="stat-label">Passion to Code</div>
-            </div>
-          </div>
+    <!-- მთავარი კონტეინერი (SPA სრულად ჩაანაცვლებს ამ ბლოკს) -->
+    <main id="mainContainer">
+      <!-- HERO სექცია -->
+      <section class="hero" id="home">
+        <div class="badge">
+          <span class="pulse-dot"></span>
+          <span data-i18n="heroBadge">ხელმისაწვდომია ახალი პროექტებისთვის</span>
         </div>
 
-        <!-- მარჯვენა სვეტი: ტექნოლოგიური სტეკი -->
-        <div class="skills-card reveal">
-          <h3 class="skills-heading">Core <span>Technologies</span></h3>
-          <p class="skills-desc" data-i18n="skillsDesc">
-            ტექნოლოგიები და ხელსაწყოები, რომლებსაც ყოველდღიურად ვიყენებ:
-          </p>
-
-          <div class="skills-list">
-            <div class="skill-item">
-              <div class="skill-info">
-                <span>HTML5 / Semantic Layouts</span>
-                <span class="skill-pct">95%</span>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-fill" style="--w: 95%"></div>
-              </div>
-            </div>
-
-            <div class="skill-item">
-              <div class="skill-info">
-                <span>Modern CSS / Flexbox & Grid / Canvas</span>
-                <span class="skill-pct">90%</span>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-fill" style="--w: 90%"></div>
-              </div>
-            </div>
-
-            <div class="skill-item">
-              <div class="skill-info">
-                <span>Vanilla JavaScript / Web Audio API</span>
-                <span class="skill-pct">85%</span>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-fill" style="--w: 85%"></div>
-              </div>
-            </div>
-
-            <div class="skill-item">
-              <div class="skill-info">
-                <span>Git & GitHub Workflow</span>
-                <span class="skill-pct">80%</span>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-fill" style="--w: 80%"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tech-tags">
-            <span class="tag">Linux</span>
-            <span class="tag">Hyprland</span>
-            <span class="tag">Tokyo Night</span>
-            <span class="tag">VS Code</span>
-            <span class="tag">UI/UX</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- მინი-ტერმინალის სექცია -->
-    <section class="terminal-section" id="terminal">
-      <h2 class="section-title reveal">
-        <span data-i18n="termTitle1">ინტერაქციული</span>
-        <span data-i18n="termTitle2">ტერმინალი</span>
-      </h2>
-
-      <div class="terminal-window reveal">
-        <div class="terminal-header">
-          <div class="terminal-dots">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-          </div>
-          <div class="terminal-title">guest@tokyo-night:~</div>
-        </div>
-
-        <div class="terminal-body" id="terminalOutput">
-          <div class="term-line system-msg">
-            Tokyo Night Cyberpunk OS [Version 1.0.4]
-          </div>
-          <div
-            class="term-line system-msg"
-            id="termWelcomeMsg"
-            data-i18n="termWelcome"
+        <h1 class="hero-title">
+          <span data-i18n="heroTitle1">ვაშენებ თანამედროვე</span> <br />
+          <span class="gradient-text" data-i18n="heroTitle2"
+            >ციფრულ გამოცდილებას</span
           >
-            სისტემა მზადაა. აკრიფე
-            <span class="cmd-highlight">help</span> ბრძანებების სიისთვის.
+        </h1>
+
+        <p class="hero-desc" data-i18n="heroDesc">
+          Front-end დეველოპმენტი და ინტერაქციული UI დიზაინი. სუფთა კოდი, მაღალი
+          წარმადობა და გამორჩეული ნეონის ესთეტიკა.
+        </p>
+
+        <div class="hero-actions">
+          <a
+            href="projects.html"
+            class="btn-primary"
+            data-i18n="viewProjectsBtn"
+            >ნახე პროექტები</a
+          >
+          <button class="btn-secondary" id="resumeBtn" data-i18n="resumeBtn">
+            ჩემი რეზიუმე
+          </button>
+        </div>
+      </section>
+
+      <!-- „ჩემ შესახებ & SKILLS“ სექცია -->
+      <section class="about-section" id="about">
+        <h2 class="section-title reveal">
+          <span data-i18n="aboutTitle1">ჩემ</span>
+          <span data-i18n="aboutTitle2">შესახებ</span>
+        </h2>
+
+        <div class="about-grid">
+          <!-- მარცხენა სვეტი: ბიო და სტატისტიკა -->
+          <div class="about-card reveal">
+            <div class="avatar-wrapper no-circle">
+              <img
+                src="favicon.svg"
+                alt="NEONDEV Logo"
+                class="avatar-svg-raw"
+              />
+            </div>
+
+            <h3 class="about-name">Creative Front-End Developer</h3>
+            <p class="about-text" data-i18n="aboutText">
+              ვქმნი თანამედროვე, სწრაფ და ვიზუალურად გამორჩეულ ციფრულ
+              ინტერფეისებს. განსაკუთრებულ ყურადღებას ვუთმობ დეტალებს,
+              მიკრო-ინტერაქციებს, სუფთა არქიტექტურასა და კიბერპანკ/Tokyo Night
+              ესთეტიკას.
+            </p>
+
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Responsive UI</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Dependencies</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">&infin;</div>
+                <div class="stat-label">Passion to Code</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- მარჯვენა სვეტი: ტექნოლოგიური სტეკი -->
+          <div class="skills-card reveal">
+            <h3 class="skills-heading">Core <span>Technologies</span></h3>
+            <p class="skills-desc" data-i18n="skillsDesc">
+              ტექნოლოგიები და ხელსაწყოები, რომლებსაც ყოველდღიურად ვიყენებ:
+            </p>
+
+            <div class="skills-list">
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span>HTML5 / Semantic Layouts</span>
+                  <span class="skill-pct">95%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-fill" style="--w: 95%"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span>Modern CSS / Flexbox & Grid / Canvas</span>
+                  <span class="skill-pct">90%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-fill" style="--w: 90%"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span>Vanilla JavaScript / Web Audio API</span>
+                  <span class="skill-pct">85%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-fill" style="--w: 85%"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span>Git & GitHub Workflow</span>
+                  <span class="skill-pct">80%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-fill" style="--w: 80%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tech-tags">
+              <span class="tag">Linux</span>
+              <span class="tag">Hyprland</span>
+              <span class="tag">Tokyo Night</span>
+              <span class="tag">VS Code</span>
+              <span class="tag">UI/UX</span>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="terminal-input-bar">
-          <span class="terminal-prompt">guest@tokyo-night:~$</span>
-          <input
-            type="text"
-            id="terminalInput"
-            placeholder="..."
-            autocomplete="off"
-            spellcheck="false"
-          />
+      <!-- მინი-ტერმინალის სექცია -->
+      <section class="terminal-section" id="terminal">
+        <h2 class="section-title reveal">
+          <span data-i18n="termTitle1">ინტერაქციული</span>
+          <span data-i18n="termTitle2">ტერმინალი</span>
+        </h2>
+
+        <div class="terminal-window reveal">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="terminal-title">guest@tokyo-night:~</div>
+          </div>
+
+          <div class="terminal-body" id="terminalOutput">
+            <div class="term-line system-msg">
+              Tokyo Night Cyberpunk OS [Version 1.0.4]
+            </div>
+            <div
+              class="term-line system-msg"
+              id="termWelcomeMsg"
+              data-i18n="termWelcome"
+            >
+              სისტემა მზადაა. აკრიფე
+              <span class="cmd-highlight">help</span> ბრძანებების სიისთვის.
+            </div>
+          </div>
+
+          <div class="terminal-input-bar">
+            <span class="terminal-prompt">guest@tokyo-night:~$</span>
+            <input
+              type="text"
+              id="terminalInput"
+              placeholder="..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <!-- ფუტერი -->
     <footer class="footer">
@@ -363,7 +408,7 @@
       </div>
     </footer>
 
-    <!-- საკონტაქტო მოდალური ფანჯარა -->
+    <!-- საკონტაქტო მოდალი -->
     <div class="modal-overlay" id="contactModal">
       <div class="modal-box">
         <button class="modal-close" id="closeBtn">&times;</button>
@@ -409,7 +454,6 @@
             ></textarea>
           </div>
 
-          <!-- სტატუსის კიბერ-შეტყობინება -->
           <div class="form-status" id="formStatus"></div>
 
           <button

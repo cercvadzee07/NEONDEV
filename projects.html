@@ -28,8 +28,9 @@
 
     <!-- ნავიგაცია -->
     <header class="navbar">
-      <div class="logo">NEON<span>DEV</span></div>
+      <a href="index.html" class="logo">NEON<span>DEV</span></a>
 
+      <!-- Cyberpunk მინი-აუდიო (Next ღილაკით), ენის და თემების გადამრთველი -->
       <div class="audio-controls-wrap">
         <div
           class="audio-player"
@@ -39,23 +40,22 @@
           <button class="player-btn" id="playToggleBtn" aria-label="Play Lo-Fi">
             <span class="player-icon" id="playerIcon">&#9658;</span>
           </button>
+          <button
+            class="player-btn"
+            id="nextTrackBtn"
+            title="Next Track"
+            aria-label="Next Track"
+          >
+            ⏭
+          </button>
           <div class="visualizer" id="visualizer">
             <span class="v-bar"></span>
             <span class="v-bar"></span>
             <span class="v-bar"></span>
             <span class="v-bar"></span>
           </div>
-          <span class="track-title">CYBER_LOFI.FM</span>
+          <span class="track-title" id="trackTitle">TOKYO_NIGHT.FM</span>
         </div>
-
-        <button
-          class="sfx-toggle-btn"
-          id="sfxToggleBtn"
-          title="UI ხმების ჩართვა/გამორთვა"
-          aria-label="Toggle SFX"
-        >
-          <span id="sfxIcon">&#128266;</span>
-        </button>
 
         <!-- ენის გადამრთველი HUD პანელი (დროშებით) -->
         <div class="lang-switcher" title="ენის შეცვლა / Switch Language">
@@ -103,6 +103,7 @@
           </button>
         </div>
 
+        <!-- თემების გადამრთველი HUD პანელი -->
         <div class="theme-switcher" title="ნეონის თემის შეცვლა">
           <button
             class="theme-dot active"
@@ -125,9 +126,23 @@
         </div>
       </div>
 
+      <!-- Cyberpunk Live HUD Telemetry -->
+      <div class="cyber-hud" id="cyberHud">
+        <span class="hud-item hud-status">
+          <span class="hud-dot"></span>
+          <span id="hudStatus">ONLINE</span>
+        </span>
+        <span class="hud-sep">•</span>
+        <span class="hud-item hud-loc" id="hudLoc">LOC: TBILISI // GE</span>
+        <span class="hud-sep">•</span>
+        <span class="hud-item hud-ping"
+          >PING: <span id="hudPing">--</span>ms</span
+        >
+      </div>
+
+      <!-- ლინკები (მხოლოდ მთავარი, პროექტები და დაკავშირება) -->
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html" data-i18n="navBack">&larr; მთავარი</a></li>
-        <li><a href="index.html#about" data-i18n="navAbout">ჩემ შესახებ</a></li>
         <li>
           <a
             href="projects.html"
@@ -135,9 +150,6 @@
             data-i18n="navProjects"
             >პროექტები</a
           >
-        </li>
-        <li>
-          <a href="index.html#terminal" data-i18n="navTerminal">ტერმინალი</a>
         </li>
         <li class="mobile-btn-wrap">
           <button class="btn-neon btn-mobile-connect" data-i18n="connectBtn">
@@ -182,8 +194,8 @@
       </div>
     </header>
 
-    <!-- პროექტების ვიტრინის სექცია -->
-    <main class="projects-page">
+    <!-- პროექტების ვიტრინის სექცია (მხოლოდ პროექტები!) -->
+    <main class="projects-page" id="mainContainer">
       <div class="projects-header reveal">
         <div class="badge">ARCHIVE // V1.0</div>
         <h1 class="page-title">

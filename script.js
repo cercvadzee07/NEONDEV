@@ -222,7 +222,6 @@ if (canvas) {
 
   initMatrix();
 
-  // მხოლოდ ჰორიზონტალურ გადაბრუნებაზე (Orientation Change) განახლება, რომ სქროლმა არ გააფუჭოს
   window.addEventListener("resize", () => {
     if (Math.abs(window.innerWidth - lastWidth) > 30) {
       initMatrix();
@@ -290,85 +289,553 @@ const savedTheme = localStorage.getItem("selectedTheme") || "tokyo";
 applyTheme(savedTheme, false);
 
 /* =========================================
-   4. CYBERPUNK AMBIENT LO-FI PLAYER
+   4. CYBER_LOFI.FM: Advanced Progression Engine (Lush Lo-Fi & Synthwave)
 ========================================= */
 const playToggleBtn = document.getElementById("playToggleBtn");
+const nextTrackBtn = document.getElementById("nextTrackBtn");
 const playerIcon = document.getElementById("playerIcon");
+const trackTitleEl = document.getElementById("trackTitle");
 const audioPlayer = document.getElementById("audioPlayer");
+const visualizerBars = document.querySelectorAll(".v-bar");
 
 const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
 let musicCtx = null;
 let isPlaying = false;
 let synthTimer = null;
+let globalStep = 0;
+let currentTrackIndex = 0;
 
-const chords = [
-  [130.81, 164.81, 196.0, 246.94],
-  [110.0, 130.81, 164.81, 196.0],
-  [146.83, 174.61, 220.0, 261.63],
-  [98.0, 123.47, 146.83, 196.0],
+let delayNode, delayFeedback, delayMix, distNode, distGain;
+
+function makeDistortionCurve(amount) {
+  const k = typeof amount === "number" ? amount : 50;
+  const n_samples = 44100;
+  const curve = new Float32Array(n_samples);
+  const deg = Math.PI / 180;
+  for (let i = 0; i < n_samples; ++i) {
+    const x = (i * 2) / n_samples - 1;
+    curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+  }
+  return curve;
+}
+
+// 3 სრულყოფილად სტრუქტურირებული ტრეკი დინამიური აკორდებით
+const playlists = [
+  {
+    name: "TOKYO_NIGHT.FM",
+    style: "lofi",
+    bpm: 72, // ძალიან ნელი და მოსადუნებელი
+    root: 73.42, // D2
+    scale: [0, 2, 3, 5, 7, 8, 10], // D Minor
+    progression: [0, -2, -1, -3], // 4-ტაქტიანი ულამაზესი პროგრესია: Dm7 -> Bbmaj7 -> C7 -> Am7
+    drums: {
+      k: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], // რბილი და იშვიათი ბიტი
+      s: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+      h: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+    },
+    bass: [
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      0,
+      null,
+      null,
+      null,
+      2,
+      null,
+      null,
+      null,
+    ],
+    chords: [
+      [0, 2, 4, 6],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    lead: [
+      null,
+      null,
+      null,
+      null,
+      4,
+      null,
+      6,
+      null,
+      7,
+      null,
+      null,
+      null,
+      9,
+      null,
+      4,
+      null,
+    ],
+  },
+  {
+    name: "CYBER_DRIFT.WAV",
+    style: "synthwave",
+    bpm: 105,
+    root: 55.0, // A1
+    scale: [0, 2, 3, 5, 7, 8, 10], // A Minor
+    progression: [0, -3, -2, -4], // Am -> F -> G -> Em
+    drums: {
+      k: [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+      s: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+      h: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    },
+    bass: [0, 0, 7, 0, 0, 0, 7, 0, -2, -2, 5, -2, 2, 2, 9, 2],
+    chords: [
+      [0, 2, 4],
+      null,
+      null,
+      null,
+      [0, 2, 4],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    lead: [
+      null,
+      null,
+      7,
+      null,
+      4,
+      null,
+      null,
+      5,
+      null,
+      3,
+      null,
+      null,
+      4,
+      null,
+      2,
+      null,
+    ],
+  },
+  {
+    name: "MATRIX_DREAM.RAW",
+    style: "ambient",
+    bpm: 115,
+    root: 41.2, // E1
+    scale: [0, 1, 3, 5, 7, 8, 10], // E Phrygian
+    progression: [0, 2, 4, 3], // ამოუცნობი მატრიცული ატმოსფერო
+    drums: {
+      k: [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+      s: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+      h: [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0],
+    },
+    bass: [
+      0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      1,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    chords: [
+      [0, 4, 7],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    lead: [
+      null,
+      7,
+      null,
+      8,
+      null,
+      5,
+      null,
+      7,
+      null,
+      3,
+      null,
+      5,
+      null,
+      1,
+      null,
+      0,
+    ],
+  },
 ];
-let chordIndex = 0;
 
-function playAmbientChord() {
-  if (!isPlaying || !musicCtx) return;
+// ნოტების ავტომატური გადამყვანი (სკალის ჰარმონიისთვის)
+function getFreq(root, scale, degree, octOffset = 0) {
+  let d = degree;
+  let oct = octOffset;
+  while (d < 0) {
+    d += scale.length;
+    oct -= 1;
+  }
+  while (d >= scale.length) {
+    d -= scale.length;
+    oct += 1;
+  }
+  const semitones = scale[d] + oct * 12;
+  return root * Math.pow(2, semitones / 12);
+}
 
-  const currentChord = chords[chordIndex];
-  chordIndex = (chordIndex + 1) % chords.length;
+/* --- ინსტრუმენტების სინთეზი --- */
+function triggerKick(style, time) {
+  const osc = musicCtx.createOscillator();
+  const gain = musicCtx.createGain();
+  osc.frequency.setValueAtTime(style === "lofi" ? 110 : 160, time);
+  osc.frequency.exponentialRampToValueAtTime(30, time + 0.1);
 
-  currentChord.forEach((freq) => {
+  gain.gain.setValueAtTime(0.001, time);
+  // Lo-fi Kick არის ძალიან რბილი და ჩუმი
+  gain.gain.exponentialRampToValueAtTime(
+    style === "lofi" ? 0.25 : 0.45,
+    time + 0.01,
+  );
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+
+  osc.connect(gain);
+  if (style === "synthwave") {
+    gain.connect(distNode);
+  } else {
+    gain.connect(musicCtx.destination);
+  }
+  osc.start(time);
+  osc.stop(time + 0.3);
+}
+
+function triggerSnare(style, time) {
+  const bufferSize = musicCtx.sampleRate * 0.15;
+  const buffer = musicCtx.createBuffer(1, bufferSize, musicCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const noise = musicCtx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = musicCtx.createBiquadFilter();
+  const gain = musicCtx.createGain();
+
+  // Lo-Fi-ში Snare ჩახშულია
+  filter.type = style === "synthwave" ? "lowpass" : "lowpass";
+  filter.frequency.setValueAtTime(style === "lofi" ? 1100 : 2800, time);
+
+  gain.gain.setValueAtTime(style === "lofi" ? 0.07 : 0.18, time);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    time + (style === "lofi" ? 0.08 : 0.15),
+  );
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(musicCtx.destination);
+  noise.start(time);
+  noise.stop(time + 0.2);
+}
+
+function triggerHiHat(style, time) {
+  const bufferSize = musicCtx.sampleRate * 0.05;
+  const buffer = musicCtx.createBuffer(1, bufferSize, musicCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const noise = musicCtx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = musicCtx.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.setValueAtTime(8000, time);
+
+  const gain = musicCtx.createGain();
+  // Lo-fi Hat თითქმის უჩინარია
+  gain.gain.setValueAtTime(style === "lofi" ? 0.015 : 0.04, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(musicCtx.destination);
+  noise.start(time);
+  noise.stop(time + 0.05);
+}
+
+function triggerBass(style, freq, time, duration) {
+  const osc = musicCtx.createOscillator();
+  const filter = musicCtx.createBiquadFilter();
+  const gain = musicCtx.createGain();
+
+  osc.type = style === "synthwave" ? "sawtooth" : "triangle";
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(style === "synthwave" ? 800 : 200, time);
+
+  if (style === "synthwave") {
+    filter.frequency.exponentialRampToValueAtTime(100, time + duration);
+    filter.Q.setValueAtTime(4, time);
+  }
+
+  gain.gain.setValueAtTime(0.001, time);
+  // Lo-fi ბასი რბილია და ღრმა
+  gain.gain.linearRampToValueAtTime(
+    style === "lofi" ? 0.15 : 0.22,
+    time + 0.05,
+  );
+  gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+  osc.connect(filter);
+  filter.connect(gain);
+
+  if (style === "synthwave") {
+    gain.connect(distNode);
+  } else {
+    gain.connect(musicCtx.destination);
+  }
+
+  osc.start(time);
+  osc.stop(time + duration + 0.1);
+}
+
+function triggerChord(style, notes, time, duration) {
+  notes.forEach((freq) => {
     const osc = musicCtx.createOscillator();
+    const filter = musicCtx.createBiquadFilter();
     const gain = musicCtx.createGain();
 
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(freq, musicCtx.currentTime);
+    osc.type = style === "synthwave" ? "sawtooth" : "sine";
+    filter.type = "lowpass";
+    // Lo-Fi-ში აკორდი უკიდურესად თბილია
+    filter.frequency.setValueAtTime(style === "lofi" ? 500 : 1800, time);
 
-    gain.gain.setValueAtTime(0.001, musicCtx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.025, musicCtx.currentTime + 0.8);
-    gain.gain.exponentialRampToValueAtTime(0.0001, musicCtx.currentTime + 3.2);
+    if (style === "synthwave") {
+      filter.frequency.exponentialRampToValueAtTime(300, time + duration);
+    }
 
-    osc.connect(gain);
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.linearRampToValueAtTime(
+      style === "lofi" ? 0.018 : 0.025,
+      time + 0.15,
+    ); // ნელი გაშლა
+    gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
     gain.connect(musicCtx.destination);
 
-    osc.start();
-    osc.stop(musicCtx.currentTime + 3.3);
+    if (style !== "synthwave") gain.connect(delayNode); // ექო ემატება
+
+    osc.start(time);
+    osc.stop(time + duration + 0.1);
   });
 }
 
+function triggerLead(style, freq, time, duration) {
+  const osc = musicCtx.createOscillator();
+  const filter = musicCtx.createBiquadFilter();
+  const gain = musicCtx.createGain();
+
+  osc.type = style === "synthwave" ? "square" : "sine";
+  filter.type = style === "ambient" ? "bandpass" : "lowpass";
+  filter.frequency.setValueAtTime(style === "synthwave" ? 2500 : 1200, time);
+
+  gain.gain.setValueAtTime(0.001, time);
+  gain.gain.linearRampToValueAtTime(
+    style === "lofi" ? 0.02 : 0.05,
+    time + 0.05,
+  );
+  gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(musicCtx.destination);
+  gain.connect(delayNode); // მელოდიას აქვს ექო
+
+  osc.start(time);
+  osc.stop(time + duration + 0.1);
+}
+
+/* --- სტრუქტურირებული ტაქტის სვლა (4 Bar Dynamic Progression) --- */
+function runCompositionStep() {
+  if (!isPlaying || !musicCtx) return;
+
+  const track = playlists[currentTrackIndex];
+  const now = musicCtx.currentTime;
+  const stepDuration = 15 / track.bpm;
+
+  // ექოს სინქრონიზაცია ბიტთან
+  if (delayNode) delayNode.delayTime.setValueAtTime(stepDuration * 3, now);
+
+  const step = globalStep % 16; // 0-დან 15-მდე (1 ტაქტი)
+  const bar = Math.floor(globalStep / 16) % 4; // 0, 1, 2, 3 (ტაქტების ციკლი)
+
+  // ჰარმონიის ავტომატური გადანაცვლება ტაქტის მიხედვით!
+  const barOffset = track.progression[bar];
+
+  const kickHit = track.drums.k[step];
+  const snareHit = track.drums.s[step];
+  const hatHit = track.drums.h[step];
+  const bassNote = track.bass[step];
+  const chordNotes = track.chords[step];
+  const leadNote = track.lead[step];
+
+  // Synthwave-ში მე-4 ტაქტზე ბიტს ვაჩერებთ დროპისთვის, Lo-Fi-ში ყველაფერი უწყვეტია
+  const isDrop = track.style === "synthwave" && bar === 3 && step >= 12;
+
+  // Drums
+  if (kickHit && !isDrop) triggerKick(track.style, now);
+  if (snareHit) triggerSnare(track.style, now);
+  if (hatHit || (isDrop && step % 2 === 0)) triggerHiHat(track.style, now);
+
+  // Bass
+  if (bassNote !== null) {
+    // ბასი გადაადგილდება მიმდინარე ტაქტის ჰარმონიის მიხედვით!
+    const freq = getFreq(track.root, track.scale, bassNote + barOffset);
+    triggerBass(track.style, freq, now, stepDuration * 0.9);
+  }
+
+  // Chords
+  if (chordNotes !== null) {
+    if (track.style === "lofi" || bar !== 3) {
+      // აკორდებიც იცვლება ყოველ ტაქტში მუსიკალური სკალის გაყოლებით
+      const freqs = chordNotes.map((n) =>
+        getFreq(track.root, track.scale, n + barOffset),
+      );
+      triggerChord(track.style, freqs, now, stepDuration * 3.5);
+    }
+  }
+
+  // Lead მელოდია
+  if (leadNote !== null) {
+    // მელოდია შემოდის მხოლოდ მე-2 და მე-3 ტაქტში, რომ მუსიკამ ისუნთქოს
+    if (track.style === "synthwave" || bar === 1 || bar === 2) {
+      const freq = getFreq(track.root, track.scale, leadNote + barOffset, 1);
+      triggerLead(track.style, freq, now, stepDuration * 1.5);
+    }
+  }
+
+  if (visualizerBars.length > 0) {
+    const intensity = kickHit ? 14 : snareHit ? 10 : hatHit ? 5 : 3;
+    visualizerBars.forEach((b) => {
+      b.style.height = `${Math.floor(Math.random() * intensity) + 4}px`;
+    });
+  }
+
+  globalStep++;
+}
+
+// ჩართვა / ეფექტების ინიციალიზაცია
 if (playToggleBtn) {
   playToggleBtn.addEventListener("click", () => {
-    if (!musicCtx) musicCtx = new AudioCtxClass();
+    if (!musicCtx) {
+      musicCtx = new AudioCtxClass();
+
+      // სივრცული Delay (ექო)
+      delayNode = musicCtx.createDelay();
+      delayFeedback = musicCtx.createGain();
+      delayMix = musicCtx.createGain();
+
+      delayFeedback.gain.value = 0.35;
+      delayMix.gain.value = 0.25;
+
+      delayNode.connect(delayFeedback);
+      delayFeedback.connect(delayNode);
+      delayNode.connect(delayMix);
+      delayMix.connect(musicCtx.destination);
+
+      // Distortion
+      distNode = musicCtx.createWaveShaper();
+      distNode.curve = makeDistortionCurve(45);
+      distNode.oversample = "4x";
+      distGain = musicCtx.createGain();
+      distGain.gain.value = 0.7;
+      distNode.connect(distGain);
+      distGain.connect(musicCtx.destination);
+    }
+
     if (musicCtx.state === "suspended") musicCtx.resume();
 
     isPlaying = !isPlaying;
 
     if (isPlaying) {
-      audioPlayer.classList.add("playing");
-      playerIcon.innerHTML = "&#10074;&#10074;";
-      playAmbientChord();
-      synthTimer = setInterval(playAmbientChord, 3200);
+      if (audioPlayer) audioPlayer.classList.add("playing");
+      if (playerIcon) playerIcon.innerHTML = "&#10074;&#10074;";
+
+      runCompositionStep();
+      const track = playlists[currentTrackIndex];
+      synthTimer = setInterval(runCompositionStep, (15 / track.bpm) * 1000);
     } else {
-      audioPlayer.classList.remove("playing");
-      playerIcon.innerHTML = "&#9658;";
+      if (audioPlayer) audioPlayer.classList.remove("playing");
+      if (playerIcon) playerIcon.innerHTML = "&#9658;";
       clearInterval(synthTimer);
+      synthTimer = null;
+      globalStep = 0;
+      visualizerBars.forEach((bar) => (bar.style.height = "3px"));
     }
   });
 }
 
+if (nextTrackBtn) {
+  nextTrackBtn.addEventListener("click", () => {
+    currentTrackIndex = (currentTrackIndex + 1) % playlists.length;
+    const nextTrack = playlists[currentTrackIndex];
+
+    if (trackTitleEl) {
+      trackTitleEl.textContent = nextTrack.name;
+    }
+
+    globalStep = 0;
+
+    if (isPlaying) {
+      clearInterval(synthTimer);
+      runCompositionStep();
+      synthTimer = setInterval(runCompositionStep, (15 / nextTrack.bpm) * 1000);
+    }
+  });
+}
 /* =========================================
    5. SCI-FI UI SOUND EFFECTS (WEB AUDIO API)
 ========================================= */
 let sfxAudioCtx = null;
 let sfxEnabled = true;
-const sfxToggleBtn = document.getElementById("sfxToggleBtn");
-const sfxIcon = document.getElementById("sfxIcon");
-
-if (sfxToggleBtn) {
-  sfxToggleBtn.addEventListener("click", () => {
-    sfxEnabled = !sfxEnabled;
-    sfxToggleBtn.style.opacity = sfxEnabled ? "1" : "0.4";
-    sfxIcon.innerHTML = sfxEnabled ? "&#128266;" : "&#128263;";
-  });
-}
 
 function playHoverSound() {
   if (!sfxEnabled || isTouchDevice) return;
@@ -562,7 +1029,7 @@ if (termInput) {
 }
 
 /* =========================================
-   7. მოდალები, SCROLL & REVEAL
+   7. მოდალები, SCROLL & REVEAL & 3D TILT
 ========================================= */
 const contactBtn = document.querySelector(".nav-desktop-btn");
 const mobileConnectBtn = document.querySelector(".btn-mobile-connect");
@@ -575,7 +1042,7 @@ const closeResumeBtn = document.getElementById("closeResumeBtn");
 function openModal(targetModal) {
   if (targetModal) {
     targetModal.classList.add("active");
-    document.body.style.overflow = "hidden"; // მობილურზე ფონის სქროლის დაბლოკვა
+    document.body.style.overflow = "hidden";
   }
 }
 
@@ -586,13 +1053,12 @@ function closeModal(targetModal) {
     if (modal) modal.classList.remove("active");
     if (resumeModal) resumeModal.classList.remove("active");
   }
-  document.body.style.overflow = ""; // სქროლის აღდგენა
+  document.body.style.overflow = "";
 }
 
 if (contactBtn) contactBtn.addEventListener("click", () => openModal(modal));
 if (mobileConnectBtn) {
   mobileConnectBtn.addEventListener("click", () => {
-    // მენიუს დახურვა და მოდალის გახსნა
     if (hamburgerBtn && navLinks) {
       hamburgerBtn.classList.remove("active");
       navLinks.classList.remove("active");
@@ -618,42 +1084,47 @@ if (scrollTopBtn) {
   );
 }
 
-// 3D Tilt ბარათებზე (მხოლოდ Desktop მაუსისთვის)
-if (!isTouchDevice) {
+// 3D Tilt ბარათებზე (ცალკე ფუნქცია, რომელიც SPA გადასვლის შემდეგაც მუშაობს)
+function init3DTilt() {
+  if (isTouchDevice) return;
   document.querySelectorAll(".card, .showcase-card").forEach((card) => {
-    card.addEventListener("mousemove", (e) => {
+    card.onmousemove = (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -5;
-      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 5;
+      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6;
+      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-    });
-    card.addEventListener("mouseleave", () => {
+    };
+    card.onmouseleave = () => {
       card.style.transform =
         "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-    });
+    };
   });
 }
+init3DTilt();
 
 // Scroll Reveal
-const revealElements = document.querySelectorAll(".reveal");
-if ("IntersectionObserver" in window) {
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("active");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 },
-  );
-  revealElements.forEach((el) => revealObserver.observe(el));
-} else {
-  revealElements.forEach((el) => el.classList.add("active"));
+function initScrollReveal() {
+  const revealElements = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 },
+    );
+    revealElements.forEach((el) => revealObserver.observe(el));
+  } else {
+    revealElements.forEach((el) => el.classList.add("active"));
+  }
 }
+initScrollReveal();
 
 /* =========================================
    8. მობილურის ჰამბურგერ მენიუ (OUTSIDE CLICK)
@@ -675,7 +1146,6 @@ if (hamburgerBtn && navLinks) {
     });
   });
 
-  // ეკრანის ცარიელ ადგილზე დაჭერისას მენიუს დახურვა
   document.addEventListener("click", (e) => {
     if (
       navLinks.classList.contains("active") &&
@@ -844,3 +1314,240 @@ if (contactForm) {
     }
   });
 }
+
+/* =========================================
+   11. SEAMLESS SPA NAVIGATION ENGINE (NO AUDIO DROP)
+========================================= */
+
+async function navigateTo(url, push = true) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to load page");
+    const htmlText = await response.text();
+
+    const parser = new DOMParser();
+    const newDoc = parser.parseFromString(htmlText, "text/html");
+
+    const currentMain = document.querySelector("main");
+    const newMain = newDoc.querySelector("main");
+
+    if (currentMain && newMain) {
+      // 1. ცენტრალური კონტენტის ჩანაცვლება
+      currentMain.innerHTML = newMain.innerHTML;
+      currentMain.className = newMain.className;
+
+      // 2. გვერდის სათაურის (Title) განახლება
+      if (newDoc.title) {
+        document.title = newDoc.title;
+      }
+
+      // 3. ისტორიის (URL) განახლება
+      if (push) {
+        window.history.pushState({ path: url }, "", url);
+      }
+
+      // 4. გვერდის თავში ასქროლვა
+      const targetHash = window.location.hash;
+      if (targetHash) {
+        const targetEl = document.querySelector(targetHash);
+        if (targetEl) targetEl.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+
+      // 5. ინტერაქტიული სისტემების ხელახალი ინიციალიზაცია
+      reinitializePageSystems();
+    }
+  } catch (error) {
+    window.location.href = url;
+  }
+}
+
+// ნავბარის დინამიური სინქრონიზაცია SPA გადასვლების დროს
+function syncNavbarState() {
+  const path = window.location.pathname;
+  const isProjects = path.includes("projects.html");
+  const navLinksUl = document.getElementById("navLinks");
+  if (!navLinksUl) return;
+
+  const homeLink = navLinksUl.querySelector('a[href="index.html"]:not(.logo)');
+  const projLink = navLinksUl.querySelector('a[href="projects.html"]');
+  let aboutLink = navLinksUl.querySelector('a[href="#about"]');
+  let termLink = navLinksUl.querySelector('a[href="#terminal"]');
+
+  // 1. თუ index.html-ზე ვართ და About/Terminal აკლია (რადგან projects-დან დავიწყეთ)
+  if (!isProjects && !aboutLink) {
+    if (homeLink) {
+      const li1 = document.createElement("li");
+      li1.innerHTML = `<a href="#about" data-i18n="navAbout">${i18nData[currentLang].navAbout}</a>`;
+      homeLink.parentElement.after(li1);
+      aboutLink = li1.querySelector("a");
+    }
+    if (projLink) {
+      const li2 = document.createElement("li");
+      li2.innerHTML = `<a href="#terminal" data-i18n="navTerminal">${i18nData[currentLang].navTerminal}</a>`;
+      projLink.parentElement.after(li2);
+      termLink = li2.querySelector("a");
+    }
+
+    // ახალ ლინკებზე ხმის ეფექტების მიბმა
+    [aboutLink, termLink].forEach((el) => {
+      if (el) {
+        el.addEventListener("mouseenter", playHoverSound);
+        el.addEventListener("click", playClickSound);
+      }
+    });
+  }
+
+  // 2. ვაკონტროლებთ გამოჩენა/დამალვას და "←" ისარს
+  if (isProjects) {
+    if (homeLink) homeLink.setAttribute("data-i18n", "navBack");
+    if (projLink) projLink.style.color = "var(--neon-primary)";
+    if (aboutLink) aboutLink.parentElement.style.display = "none";
+    if (termLink) termLink.parentElement.style.display = "none";
+  } else {
+    if (homeLink) homeLink.setAttribute("data-i18n", "navHome");
+    if (projLink) projLink.style.color = "";
+    if (aboutLink) aboutLink.parentElement.style.display = "block";
+    if (termLink) termLink.parentElement.style.display = "block";
+  }
+
+  // 3. თარგმანის გადატარება ახალ ტექსტებზე (ისრის მოსაშორებლად/დასამატებლად)
+  if (typeof applyLanguage === "function") {
+    applyLanguage(currentLang);
+  }
+}
+
+// სისტემების განახლება ახალ გვერდზე გადასვლისას
+function reinitializePageSystems() {
+  // 1. ნავბარის სინქრონიზაცია (ისრების და ლინკების გასწორება)
+  syncNavbarState();
+
+  // 2. 3D Tilt ეფექტის მიბმა ახალ ბარათებზე
+  init3DTilt();
+
+  // 3. Scroll Reveal ანიმაციის ხელახალი გაშვება
+  initScrollReveal();
+
+  // 4. ხმის ეფექტების (SFX) მიბმა ახალ ღილაკებზე
+  document
+    .querySelectorAll(".showcase-actions a, .btn-primary, .btn-secondary, .tag")
+    .forEach((el) => {
+      el.addEventListener("mouseenter", playHoverSound);
+      el.addEventListener("click", playClickSound);
+    });
+
+  // 5. Hacker Text Scramble ეფექტი სათაურებზე
+  const scrambleTargets = document.querySelectorAll(
+    ".gradient-text, .page-title span",
+  );
+  scrambleTargets.forEach((target) => {
+    const scrambler = new TextScramble(target);
+    setTimeout(() => scrambler.init(), 200);
+  });
+}
+
+// თავდაპირველი ჩატვირთვისასაც გავუშვათ ნავბარის სინქრონიზაცია
+window.addEventListener("DOMContentLoaded", () => {
+  syncNavbarState();
+});
+
+// შიდა ლინკებზე დაკლიკების დაჭერა
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href) return;
+
+  if (
+    link.target === "_blank" ||
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:")
+  ) {
+    return;
+  }
+
+  // იმავე გვერდზე ჰეშზე (#about, #terminal) გადასვლა
+  if (href.startsWith("#")) {
+    e.preventDefault();
+    const targetEl = document.querySelector(href);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", href);
+    }
+    return;
+  }
+
+  // გვერდებს შორის გადასვლა (index.html <-> projects.html)
+  if (href.includes(".html") || href === "/" || href.includes("#")) {
+    e.preventDefault();
+    navigateTo(href, true);
+  }
+});
+
+// ბრაუზერის უკან/წინ ისრებზე (Back/Forward) მხარდაჭერა
+window.addEventListener("popstate", () => {
+  navigateTo(window.location.href, false);
+});
+
+/* =========================================
+   12. CYBER HUD TELEMETRY ENGINE (REAL PING & LOC)
+========================================= */
+async function initCyberHud() {
+  const locEl = document.getElementById("hudLoc");
+  const pingEl = document.getElementById("hudPing");
+  const statusEl = document.getElementById("hudStatus");
+
+  // 1. Online / Offline სტატუსი
+  window.addEventListener("online", () => {
+    if (statusEl) {
+      statusEl.textContent = "ONLINE";
+      statusEl.parentElement.style.color = "#00ff66";
+    }
+  });
+  window.addEventListener("offline", () => {
+    if (statusEl) {
+      statusEl.textContent = "OFFLINE";
+      statusEl.parentElement.style.color = "#ff007f";
+    }
+  });
+
+  // 2. რეალური ლოკაცია IP-ით
+  try {
+    const res = await fetch("https://ipapi.co/json/");
+    if (res.ok) {
+      const data = await res.json();
+      const city = data.city ? data.city.toUpperCase() : "TBILISI";
+      const country = data.country_code
+        ? data.country_code.toUpperCase()
+        : "GE";
+      if (locEl) locEl.textContent = `LOC: ${city} // ${country}`;
+    }
+  } catch (err) {
+    if (locEl) locEl.textContent = "LOC: TBILISI // GE";
+  }
+
+  // 3. რეალური Ping-ის გაზომვა
+  async function checkPing() {
+    if (!pingEl) return;
+    const start = performance.now();
+    try {
+      await fetch("https://1.1.1.1/cdn-cgi/trace", {
+        mode: "no-cors",
+        cache: "no-store",
+      });
+      const duration = Math.round(performance.now() - start);
+      pingEl.textContent = duration;
+    } catch {
+      pingEl.textContent = Math.floor(Math.random() * 10) + 12;
+    }
+  }
+
+  checkPing();
+  setInterval(checkPing, 5000);
+}
+
+window.addEventListener("DOMContentLoaded", initCyberHud);

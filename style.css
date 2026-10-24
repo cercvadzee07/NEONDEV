@@ -13,8 +13,8 @@
 
 /* 2. Cyberpunk 2077 თემა */
 body.theme-cyber {
-  --neon-primary: #fcee0a; /* ნეონის ყვითელი */
-  --neon-secondary: #ff007f; /* მაგენტა */
+  --neon-primary: #fcee0a;
+  --neon-secondary: #ff007f;
   --neon-glow: rgba(252, 238, 10, 0.45);
   --neon-border: rgba(252, 238, 10, 0.3);
   --bg-dark: #0d0d11;
@@ -23,8 +23,8 @@ body.theme-cyber {
 
 /* 3. Matrix Protocol თემა */
 body.theme-matrix {
-  --neon-primary: #00ff66; /* მატრიცის მწვანე */
-  --neon-secondary: #73d216; /* ზურმუხტისფერი */
+  --neon-primary: #00ff66;
+  --neon-secondary: #73d216;
   --neon-glow: rgba(0, 255, 102, 0.45);
   --neon-border: rgba(0, 255, 102, 0.3);
   --bg-dark: #08110b;
@@ -71,7 +71,8 @@ body {
   textarea,
   .card,
   .player-btn,
-  .theme-dot {
+  .theme-dot,
+  .lang-btn {
     cursor: none !important;
   }
 }
@@ -124,12 +125,12 @@ body {
 }
 
 /* =========================================
-   ნავბარი (HEADER)
+   ნავბარი (HEADER) - ფიქსირებული & სტაბილური
 ========================================= */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: flex-start;
   padding: 14px 40px;
   background-color: rgba(26, 27, 38, 0.88);
   backdrop-filter: blur(12px);
@@ -138,26 +139,35 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
-  gap: 16px;
+  width: 100%;
 }
 
-.logo {
+.logo,
+.logo:hover,
+.logo:visited {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 1.5px;
   color: #ffffff;
   white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none !important;
+  display: inline-block;
 }
 
 .logo span {
   color: var(--neon-secondary);
+  text-decoration: none !important;
 }
 
+/* მუსიკა, დროშები და თემები: მყარად მიჯაჭვული ლოგოსთან */
 .audio-controls-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  margin-left: 28px;
+  margin-right: 0; /* Auto ამოღებულია HUD-ის ცენტრირებისთვის */
 }
 
 .audio-player {
@@ -169,6 +179,7 @@ body {
   padding: 5px 12px;
   border-radius: 30px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
 }
 
 .player-btn {
@@ -184,6 +195,7 @@ body {
   font-size: 11px;
   outline: none;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .player-btn:hover {
@@ -238,6 +250,9 @@ body {
   font-weight: 700;
   color: var(--neon-primary);
   letter-spacing: 0.5px;
+  min-width: 115px; /* ფიქსირებული სიგანე რყევის თავიდან ასაცილებლად */
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .sfx-toggle-btn {
@@ -253,6 +268,7 @@ body {
   font-size: 13px;
   cursor: pointer;
   outline: none;
+  flex-shrink: 0;
   transition: all 0.25s ease;
 }
 
@@ -269,6 +285,7 @@ body {
   border: 1px solid var(--neon-border);
   padding: 5px 10px;
   border-radius: 30px;
+  flex-shrink: 0;
 }
 
 .theme-dot {
@@ -310,6 +327,7 @@ body {
   padding: 4px 6px;
   border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
 }
 
 .lang-btn {
@@ -346,11 +364,88 @@ body {
   box-shadow: 0 0 8px var(--neon-glow);
 }
 
+/* =========================================
+   CYBERPUNK HUD STATUS BAR
+========================================= */
+.cyber-hud {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 17, 26, 0.7);
+  border: 1px solid var(--neon-border);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #7a88cf;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  margin: 0 auto; /* იდეალური ცენტრირება თემებსა და მენიუს შორის */
+}
+
+.hud-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #00ff66;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ff66;
+  animation: pulse-dot 1.5s infinite;
+}
+
+.hud-status {
+  color: #00ff66;
+}
+
+.hud-sep {
+  color: var(--neon-border);
+}
+
+.hud-loc {
+  color: var(--neon-primary);
+}
+
+.hud-ping span {
+  color: var(--neon-secondary);
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* პლანშეტებსა და ტელეფონებზე HUD სრულად დამალულია */
+@media (max-width: 1024px) {
+  .cyber-hud {
+    display: none !important;
+  }
+}
+
+/* =========================================
+   ნავიგაციის ლინკები
+========================================= */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   list-style: none;
+  margin-right: 24px;
+  flex-shrink: 0;
 }
 
 .nav-links li {
@@ -359,13 +454,14 @@ body {
 }
 
 .nav-links li a {
-  display: block;
+  display: inline-block;
   text-decoration: none;
   color: #c0caf5;
   font-size: 14px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  white-space: nowrap;
   transition:
     color 0.25s ease,
     transform 0.25s ease;
@@ -398,10 +494,18 @@ body {
   transform: translateY(-2px);
 }
 
+/* მარჯვენა ბლოკი & დაკავშირების ღილაკი */
 .nav-right {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex-shrink: 0;
+}
+
+.nav-desktop-btn {
+  min-width: 128px !important;
+  text-align: center !important;
+  flex-shrink: 0 !important;
 }
 
 .hamburger {
@@ -428,6 +532,10 @@ body {
 }
 
 .mobile-btn-wrap {
+  display: none;
+}
+
+.mobile-theme-section {
   display: none;
 }
 
@@ -581,7 +689,6 @@ body {
     0 0 20px var(--neon-glow);
 }
 
-/* ლოგოს სუფთა კონტეინერი წრის გარეშე */
 .avatar-wrapper.no-circle {
   position: relative;
   width: 84px;
@@ -1404,7 +1511,7 @@ body {
 }
 
 /* =========================================
-   მობილურის ნავბარი და ჰამბურგერი (FIX)
+   მობილურის ადაპტაცია (768px-მდე)
 ========================================= */
 @media (max-width: 768px) {
   .navbar {
@@ -1423,19 +1530,24 @@ body {
     flex-shrink: 0 !important;
   }
 
-  /* 1. მობილურზე მუსიკის და SFX ღილაკების სრული გათიშვა */
+  /* მუსიკის და SFX კონტროლების დამალვა მობილურზე */
   .audio-player,
   .sfx-toggle-btn {
     display: none !important;
   }
 
-  /* 2. შუა ზოლი: მხოლოდ ენები და თემები რჩება ცენტრში */
+  /* შუა ზოლი: მხოლოდ ენების გადამრთველი რჩება */
   .audio-controls-wrap {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
-    margin: 0 auto !important; /* ცენტრირება */
+    margin: 0 auto !important;
+  }
+
+  /* ზედა ნავბარიდან თემების დამალვა მობილურზე */
+  .audio-controls-wrap .theme-switcher {
+    display: none !important;
   }
 
   .lang-switcher {
@@ -1448,18 +1560,7 @@ body {
     height: 12px !important;
   }
 
-  .theme-switcher {
-    display: flex !important;
-    padding: 4px 8px !important;
-    gap: 6px !important;
-  }
-
-  .theme-dot {
-    width: 12px !important;
-    height: 12px !important;
-  }
-
-  /* 3. მარჯვენა ბლოკი და ჰამბურგერი */
+  /* მარჯვენა ბლოკი და ჰამბურგერი */
   .nav-right {
     display: flex !important;
     align-items: center !important;
@@ -1496,7 +1597,6 @@ body {
       opacity 0.3s ease;
   }
 
-  /* ჰამბურგერის ტრანსფორმაცია "X"-ად გახსნისას */
   .hamburger.active .bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
   }
@@ -1507,7 +1607,7 @@ body {
     transform: translateY(-8px) rotate(-45deg);
   }
 
-  /* სლაიდ-მენიუ */
+  /* მობილურის გვერდითი მენიუ */
   .nav-links {
     position: fixed;
     top: 0;
@@ -1521,7 +1621,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    gap: 20px;
+    gap: 18px;
     padding: 40px 24px;
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1050;
@@ -1536,6 +1636,7 @@ body {
     font-size: 16px;
     padding: 10px 14px;
     border-radius: 6px;
+    display: block;
   }
 
   .mobile-btn-wrap {
@@ -1549,38 +1650,7 @@ body {
     padding: 12px;
   }
 
-  /* Hero მოქმედებები */
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    gap: 12px;
-  }
-  .hero-actions .btn-primary,
-  .hero-actions .btn-secondary {
-    width: 100%;
-  }
-
-  .cursor-dot,
-  .cursor-ring {
-    display: none !important;
-  }
-}
-/* =======================================================
-   მობილურის მენიუს თემები & ნავბარის გასუფთავება
-======================================================= */
-/* დესკტოპზე მენიუს შიდა თემები დამალულია */
-.mobile-theme-section {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  /* 1. ზედა ნავბარიდან თემების დამალვა მობილურზე */
-  .audio-controls-wrap .theme-switcher {
-    display: none !important;
-  }
-
-  /* 2. მობილურის მენიუში თემების გამოჩენა */
+  /* თემების პანელი მობილურის მენიუს შიგნით */
   .mobile-theme-section {
     display: flex !important;
     flex-direction: column !important;
@@ -1608,5 +1678,118 @@ body {
   .mobile-theme-section .theme-dot {
     width: 16px !important;
     height: 16px !important;
+  }
+
+  /* Hero სექციის ადაპტაცია */
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    gap: 12px;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+
+  /* ჩემ შესახებ & უნარები: სუფთა სიმეტრიული სვეტი */
+  .about-section {
+    padding: 50px 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .about-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 24px !important;
+  }
+
+  .about-card,
+  .skills-card {
+    width: 100% !important;
+    padding: 24px 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  .stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .stat-num {
+    font-size: 18px !important;
+  }
+
+  .stat-label {
+    font-size: 10px !important;
+  }
+
+  /* Projects Showcase: სურათი ზემოთ, ტექსტი ქვემოთ */
+  .projects-page {
+    padding: 30px 16px 70px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .showcase-card {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+
+  .showcase-preview {
+    width: 100% !important;
+    padding: 16px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--neon-border) !important;
+    box-sizing: border-box !important;
+  }
+
+  .preview-mockup {
+    width: 100% !important;
+    height: 200px !important;
+    min-height: unset !important;
+  }
+
+  .showcase-info {
+    width: 100% !important;
+    padding: 20px 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  .showcase-info h2 {
+    font-size: 20px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .showcase-info p {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 18px !important;
+  }
+
+  .showcase-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .showcase-actions a {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 11px 0 !important;
+    box-sizing: border-box !important;
   }
 }
