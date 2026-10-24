@@ -1609,24 +1609,25 @@ body {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px; /* ფიქსირებული სიგანე მოჭრის თავიდან ასაცილებლად */
-    height: 100dvh; /* დინამიური სიმაღლე მობილურის ბრაუზერებისთვის */
-    max-height: 100vh;
+    width: 280px;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 !important; /* <--- ეს აშორებს მარჯვენა სიცარიელეს */
     background: rgba(15, 17, 26, 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid var(--neon-border);
-    border-bottom: 1px solid var(--neon-border); /* ძირის მკაფიო ხაზი */
-    border-bottom-left-radius: 24px; /* მარცხენა ქვედა კუთხის მომრგვალება */
+    border-bottom: none; /* <--- ეს აგვარებს ძირის პრობლემას */
+    border-bottom-left-radius: 24px;
     flex-direction: column;
-    justify-content: flex-start; /* ზემოდან დაწყება, რომ არ ამოიჭრას */
+    justify-content: flex-start;
     align-items: stretch;
     gap: 18px;
-    padding: 80px 24px 40px; /* 80px ზემოდან, რომ ნავბარმა არ გადაფაროს */
+    padding: 80px 24px 40px;
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1050;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
-    box-sizing: border-box; /* კრიტიკული მოჭრის ასარიდებლად */
+    box-sizing: border-box;
     overflow-y: auto;
   }
 
