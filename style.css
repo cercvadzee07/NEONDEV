@@ -1536,7 +1536,7 @@ body {
     display: none !important;
   }
 
-  /* შუა ზოლი: მხოლოდ ენების გადამრთველი რჩება */
+  /* შუა ზოლი: ენების და თემების გადამრთველი დაბრუნდა ნავბარში */
   .audio-controls-wrap {
     display: flex !important;
     align-items: center !important;
@@ -1545,10 +1545,7 @@ body {
     margin: 0 auto !important;
   }
 
-  /* ზედა ნავბარიდან თემების დამალვა მობილურზე */
-  .audio-controls-wrap .theme-switcher {
-    display: none !important;
-  }
+  /* აქედან ამოღებულია .theme-switcher-ის დამალვის კოდი, რომ ნავბარში გამოჩნდეს */
 
   .lang-switcher {
     padding: 3px 6px !important;
@@ -1607,25 +1604,30 @@ body {
     transform: translateY(-8px) rotate(-45deg);
   }
 
-  /* მობილურის გვერდითი მენიუ */
+  /* მობილურის გვერდითი მენიუს (ბურგერის) სრული გასწორება */
   .nav-links {
     position: fixed;
     top: 0;
     right: -100%;
-    width: min(78vw, 290px);
-    height: 100vh;
+    width: 280px; /* ფიქსირებული სიგანე მოჭრის თავიდან ასაცილებლად */
+    height: 100dvh; /* დინამიური სიმაღლე მობილურის ბრაუზერებისთვის */
+    max-height: 100vh;
     background: rgba(15, 17, 26, 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid var(--neon-border);
+    border-bottom: 1px solid var(--neon-border); /* ძირის მკაფიო ხაზი */
+    border-bottom-left-radius: 24px; /* მარცხენა ქვედა კუთხის მომრგვალება */
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* ზემოდან დაწყება, რომ არ ამოიჭრას */
     align-items: stretch;
     gap: 18px;
-    padding: 40px 24px;
+    padding: 80px 24px 40px; /* 80px ზემოდან, რომ ნავბარმა არ გადაფაროს */
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1050;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+    box-sizing: border-box; /* კრიტიკული მოჭრის ასარიდებლად */
+    overflow-y: auto;
   }
 
   .nav-links.active {
@@ -1650,146 +1652,8 @@ body {
     padding: 12px;
   }
 
-  /* თემების პანელი მობილურის მენიუს შიგნით */
+  /* შიდა მენიუს თემები დაიმალა, რადგან ნავბარში დავაბრუნეთ */
   .mobile-theme-section {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    margin-top: 15px !important;
-    padding-top: 15px !important;
-    border-top: 1px solid var(--neon-border) !important;
-    width: 100% !important;
-  }
-
-  .mobile-theme-label {
-    font-size: 11px !important;
-    font-family: monospace !important;
-    color: var(--neon-secondary) !important;
-    letter-spacing: 1px !important;
-  }
-
-  .mobile-theme-section .theme-switcher {
-    display: inline-flex !important;
-    align-self: flex-start !important;
-    padding: 6px 12px !important;
-    gap: 10px !important;
-  }
-
-  .mobile-theme-section .theme-dot {
-    width: 16px !important;
-    height: 16px !important;
-  }
-
-  /* Hero სექციის ადაპტაცია */
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    gap: 12px;
-  }
-  .hero-actions .btn-primary,
-  .hero-actions .btn-secondary {
-    width: 100%;
-  }
-
-  .cursor-dot,
-  .cursor-ring {
     display: none !important;
-  }
-
-  /* ჩემ შესახებ & უნარები: სუფთა სიმეტრიული სვეტი */
-  .about-section {
-    padding: 50px 18px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .about-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 24px !important;
-  }
-
-  .about-card,
-  .skills-card {
-    width: 100% !important;
-    padding: 24px 20px !important;
-    box-sizing: border-box !important;
-  }
-
-  .stats-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px !important;
-    width: 100% !important;
-  }
-
-  .stat-num {
-    font-size: 18px !important;
-  }
-
-  .stat-label {
-    font-size: 10px !important;
-  }
-
-  /* Projects Showcase: სურათი ზემოთ, ტექსტი ქვემოთ */
-  .projects-page {
-    padding: 30px 16px 70px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .showcase-card {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    border-radius: 14px !important;
-    overflow: hidden !important;
-  }
-
-  .showcase-preview {
-    width: 100% !important;
-    padding: 16px !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--neon-border) !important;
-    box-sizing: border-box !important;
-  }
-
-  .preview-mockup {
-    width: 100% !important;
-    height: 200px !important;
-    min-height: unset !important;
-  }
-
-  .showcase-info {
-    width: 100% !important;
-    padding: 20px 18px !important;
-    box-sizing: border-box !important;
-  }
-
-  .showcase-info h2 {
-    font-size: 20px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .showcase-info p {
-    font-size: 13px !important;
-    line-height: 1.6 !important;
-    margin-bottom: 18px !important;
-  }
-
-  .showcase-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    width: 100% !important;
-  }
-
-  .showcase-actions a {
-    width: 100% !important;
-    text-align: center !important;
-    padding: 11px 0 !important;
-    box-sizing: border-box !important;
   }
 }
