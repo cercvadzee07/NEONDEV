@@ -957,12 +957,14 @@ const commands = {
       ? `ხელმისაწვდომი ბრძანებები:
   - <span class="cmd-highlight">skills</span>: ტექნოლოგიური სტეკი
   - <span class="cmd-highlight">about</span>: მოკლე ინფორმაცია
-  - <span class="cmd-highlight">play</span>: კიბერპანკ მუსიკის ჩართვა/გამორთვა
+  - <span class="cmd-highlight">play</span>: კიბერპანკ მუსიკის ჩართვა
+  - <span class="cmd-highlight">stop</span>: კიბერპანკ მუსიკის გამორთვა
   - <span class="cmd-highlight">clear</span>: ეკრანის გასუფთავება`
       : `Available commands:
   - <span class="cmd-highlight">skills</span>: Core tech stack
   - <span class="cmd-highlight">about</span>: Short biography
-  - <span class="cmd-highlight">play</span>: Toggle cyberpunk audio
+  - <span class="cmd-highlight">play</span>: Start cyberpunk audio
+  - <span class="cmd-highlight">stop</span>: Stop cyberpunk audio
   - <span class="cmd-highlight">clear</span>: Clear terminal console`,
 
   skills: `Technologies: [ HTML5, CSS3, JavaScript, Web Audio API, Canvas, Git, Linux ]`,
@@ -970,9 +972,15 @@ const commands = {
     currentLang === "ka"
       ? `Frontend დეველოპერი, რომელიც ორიენტირებულია მაღალი დონის ინტერაქციულ UI/UX დიზაინზე.`
       : `Creative Frontend Engineer focusing on interactive UI/UX and cyberpunk design systems.`,
+
   play: () => {
-    if (playToggleBtn) playToggleBtn.click();
-    return isPlaying ? "CYBER_LOFI.FM // ONLINE" : "CYBER_LOFI.FM // OFFLINE";
+    if (!isPlaying && playToggleBtn) playToggleBtn.click();
+    return "CYBER_LOFI.FM // ONLINE";
+  },
+
+  stop: () => {
+    if (isPlaying && playToggleBtn) playToggleBtn.click();
+    return "CYBER_LOFI.FM // OFFLINE";
   },
 };
 
@@ -1087,20 +1095,24 @@ if (scrollTopBtn) {
 // 3D Tilt ბარათებზე (ცალკე ფუნქცია, რომელიც SPA გადასვლის შემდეგაც მუშაობს)
 function init3DTilt() {
   if (isTouchDevice) return;
-  document.querySelectorAll(".card, .showcase-card").forEach((card) => {
-    card.onmousemove = (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6;
-      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-    };
-    card.onmouseleave = () => {
-      card.style.transform =
-        "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-    };
-  });
+  document
+    .querySelectorAll(
+      ".card, .showcase-card, .about-card, .skills-card, .stat-item",
+    )
+    .forEach((card) => {
+      card.onmousemove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6;
+        const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      };
+      card.onmouseleave = () => {
+        card.style.transform =
+          "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      };
+    });
 }
 init3DTilt();
 
@@ -1224,7 +1236,7 @@ class TextScramble {
     if (this.isLogo) {
       this.el.innerHTML = `${neonPart}<span>${devPart}</span>`;
     } else {
-      this.el.innerHTML = simpleOutput;
+      this.el.innerHTML = this.originalHTML;
     }
 
     if (complete !== this.queue.length) {
