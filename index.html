@@ -3,7 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neon Tokyo Portfolio</title>
+    <title>NEONDEV | Front-End Developer Portfolio</title>
+    <meta
+      name="description"
+      content="Front-End დეველოპერის პორტფოლიო: ინტერაქციული UI, Next.js, Tailwind CSS და Vanilla JS პროექტები."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NEONDEV | Front-End Developer Portfolio" />
+    <meta
+      property="og:description"
+      content="ინტერაქციული ვებ-აპლიკაციები, კიბერპანკ ინტერფეისები და ექსპერიმენტული UI სისტემები."
+    />
+    <meta property="og:url" content="https://cercvadzee07.github.io/NEONDEV/" />
+    <meta
+      property="og:image"
+      content="https://cercvadzee07.github.io/NEONDEV/tokyo-os-preview.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="stylesheet" href="style.css" />
     <script>
@@ -256,8 +272,8 @@
                 <div class="stat-label">Responsive UI</div>
               </div>
               <div class="stat-item">
-                <div class="stat-num">0</div>
-                <div class="stat-label">Dependencies</div>
+                <div class="stat-num">3</div>
+                <div class="stat-label">Live Projects</div>
               </div>
               <div class="stat-item">
                 <div class="stat-num">&infin;</div>
@@ -301,6 +317,16 @@
                 </div>
                 <div class="skill-bar">
                   <div class="skill-fill" style="--w: 85%"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span>Next.js / Tailwind CSS</span>
+                  <span class="skill-pct">75%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-fill" style="--w: 75%"></div>
                 </div>
               </div>
 
@@ -383,20 +409,30 @@
         </div>
 
         <div class="footer-socials">
-          <a href="https://github.com" target="_blank" class="social-link"
+          <a
+            href="https://github.com/cercvadzee07"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
             >GitHub</a
           >
-          <a href="https://linkedin.com" target="_blank" class="social-link"
+          <a
+            href="https://www.linkedin.com/in/beka-tsertsvadze-3347a1377/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
             >LinkedIn</a
           >
-          <a href="https://x.com" target="_blank" class="social-link">X</a>
+          <a href="mailto:neondev.code@gmail.com" class="social-link">Email</a>
         </div>
 
         <div class="footer-action">
           <button
+            type="button"
             id="scrollTopBtn"
             class="btn-scroll-top"
             title="ზემოთ დაბრუნება"
+            aria-label="Scroll to top"
           >
             &#8593;
           </button>
@@ -411,7 +447,14 @@
     <!-- საკონტაქტო მოდალი -->
     <div class="modal-overlay" id="contactModal">
       <div class="modal-box">
-        <button class="modal-close" id="closeBtn">&times;</button>
+        <button
+          type="button"
+          class="modal-close"
+          id="closeBtn"
+          aria-label="Close modal"
+        >
+          &times;
+        </button>
 
         <h3 class="modal-title">
           <span data-i18n="modalContactTitle1">მოდი</span>
@@ -471,7 +514,14 @@
     <!-- რეზიუმეს მოდალი -->
     <div class="modal-overlay" id="resumeModal">
       <div class="modal-box modal-resume">
-        <button class="modal-close" id="closeResumeBtn">&times;</button>
+        <button
+          type="button"
+          class="modal-close"
+          id="closeResumeBtn"
+          aria-label="Close modal"
+        >
+          &times;
+        </button>
         <h3 class="modal-title">
           <span data-i18n="resumeModalTitle1">ჩემი</span>
           <span data-i18n="resumeModalTitle2">რეზიუმე / CV</span>
@@ -493,7 +543,7 @@
               data-i18n="cvStackLabel"
               >სტეკი:</strong
             >
-            HTML5, Modern CSS, Vanilla JS, Web APIs, Git
+            HTML5, Modern CSS, Vanilla JS, Next.js, Tailwind CSS, Web APIs, Git
           </p>
           <p>
             <strong style="color: #9ece6a" data-i18n="cvFocusLabel"
@@ -505,20 +555,17 @@
           </p>
         </div>
 
-        <button
+        <!-- ჩანს მხოლოდ მაშინ, როცა რეპოში cv.pdf არსებობს (იხ. script.js) -->
+        <a
+          href="cv.pdf"
+          download
           class="btn-primary"
-          style="width: 100%"
-          onclick="
-            alert(
-              currentLang === 'ka'
-                ? 'რეალური PDF ფაილის დამატების შემდეგ დაიწყება გადმოწერა!'
-                : 'Download will start once a real PDF file is linked!',
-            )
-          "
+          id="downloadCvBtn"
+          style="width: 100%; display: none"
           data-i18n="downloadCvBtn"
         >
           PDF რეზიუმეს ჩამოტვირთვა
-        </button>
+        </a>
       </div>
     </div>
 

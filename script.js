@@ -53,9 +53,11 @@ const i18nData = {
     proj1Desc:
       "ბრაუზერში გაშვებული კიბერპანკ სამუშაო გარემო მრავალფანჯრიანი სისტემით, Tokyo Night თემით, ანიმაციებითა და სისტემური მონიტორინგის ფუნქციებით.",
     proj2Desc:
-      "ვირტუალური ბრძანებათა სტრიქონი რეალურ დროში სინთეზირებული კლავიატურის აკრეფის ხმებით, ჩაშენებული ბრძანებებითა და სისტემური მანიპულაციით.",
+      "თანამედროვე, მაღალი წარმადობის ონლაინ მაღაზიის ვებ-აპლიკაცია აწყობილი Next.js-ით და Tailwind CSS-ით, ოპტიმიზებული მომხმარებლის ინტერფეისითა და სრულყოფილი სავაჭრო ფუნქციონალით.",
     proj3Desc:
-      "სრულად მორგებული Tiling Window Manager-ის კონფიგურაცია Wayland-ზე. Waybar-ის პერსონალური მოდულები, Rofi მენიუ და ჰარმონიული ნეონის პალიტრა.",
+      "კრიპტოვალუტის და საფონდო ბირჟის რეალურდროული დაფა (Dashboard) კიბერპანკ/Tokyo Night სტილში, ცოცხალი გრაფიკებით, ტიქერებითა და სისტემური მეტრიკებით.",
+    liveDemoBtn: "Live Demo →",
+    sourceCodeBtn: "Source Code",
   },
   en: {
     navHome: "Home",
@@ -107,9 +109,11 @@ const i18nData = {
     proj1Desc:
       "In-browser cyberpunk desktop environment featuring multi-window manager, Tokyo Night theme, physics animations, and system telemetry.",
     proj2Desc:
-      "Procedural web terminal engine with real-time Web Audio API synthesized mechanical keystrokes and system management commands.",
+      "A modern, high-performance online store built with Next.js and Tailwind CSS, featuring a polished UI and a complete shopping flow.",
     proj3Desc:
-      "Fully customized Tiling Window Manager setup on Wayland with custom Waybar modules, Rofi app launcher, and unified neon palette.",
+      "Real-time crypto and stock market dashboard in a Cyberpunk/Tokyo Night style, with live charts, tickers, and system metrics.",
+    liveDemoBtn: "Live Demo →",
+    sourceCodeBtn: "Source Code",
   },
 };
 
@@ -1079,6 +1083,16 @@ if (resumeBtn && resumeModal)
 if (closeResumeBtn && resumeModal)
   closeResumeBtn.addEventListener("click", () => closeModal(resumeModal));
 
+// PDF ღილაკი ჩანს მხოლოდ მაშინ, როცა cv.pdf რეალურად არსებობს
+const downloadCvBtn = document.getElementById("downloadCvBtn");
+if (downloadCvBtn) {
+  fetch(downloadCvBtn.getAttribute("href"), { method: "HEAD" })
+    .then((res) => {
+      if (res.ok) downloadCvBtn.style.display = "";
+    })
+    .catch(() => {});
+}
+
 window.addEventListener("click", (e) => {
   if (e.target === modal) closeModal(modal);
   if (e.target === resumeModal) closeModal(resumeModal);
@@ -1317,8 +1331,8 @@ if (contactForm) {
       formStatus.className = "form-status error";
       formStatus.textContent =
         currentLang === "ka"
-          ? "[ERR: 500] გაგზავნა ვერ მოხერხდა. სცადეთ მოგვიანებით."
-          : "[ERR: 500] Packet drop. Try again later.";
+          ? "[ERROR] გაგზავნა ვერ მოხერხდა. სცადეთ მოგვიანებით."
+          : "[ERROR] Message could not be sent. Try again later.";
     } finally {
       submitBtn.disabled = false;
       submitBtn.style.opacity = "1";
