@@ -55,7 +55,7 @@ const i18nData = {
     proj2Desc:
       "თანამედროვე, მაღალი წარმადობის ონლაინ მაღაზიის ვებ-აპლიკაცია აწყობილი Next.js-ით და Tailwind CSS-ით, ოპტიმიზებული მომხმარებლის ინტერფეისითა და სრულყოფილი სავაჭრო ფუნქციონალით.",
     proj3Desc:
-      "კრიპტოვალუტის და საფონდო ბირჟის რეალურდროული დაფა (Dashboard) კიბერპანკ/Tokyo Night სტილში, ცოცხალი გრაფიკებით, ტიქერებითა და სისტემური მეტრიკებით.",
+      "რეალურდროული კრიპტო ტერმინალი Swiss private banking სტილში: ლაივ ფასები Binance WebSocket-ით, ცოცხალი სანთლების გრაფიკი, Level-2 order book და OTC ორდერების პანელი.",
     liveDemoBtn: "Live Demo →",
     sourceCodeBtn: "Source Code",
   },
@@ -111,7 +111,7 @@ const i18nData = {
     proj2Desc:
       "A modern, high-performance online store built with Next.js and Tailwind CSS, featuring a polished UI and a complete shopping flow.",
     proj3Desc:
-      "Real-time crypto and stock market dashboard in a Cyberpunk/Tokyo Night style, with live charts, tickers, and system metrics.",
+      "Real-time crypto terminal in a Swiss private banking style: live Binance WebSocket prices, streaming candlestick chart, Level-2 order book and an OTC order panel.",
     liveDemoBtn: "Live Demo →",
     sourceCodeBtn: "Source Code",
   },
