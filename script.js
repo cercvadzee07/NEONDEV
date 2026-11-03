@@ -52,8 +52,6 @@ const i18nData = {
       "ინტერაქციული ვებ-აპლიკაციები, კიბერპანკ ინტერფეისები და ექსპერიმენტული UI სისტემები.",
     proj1Desc:
       "ბრაუზერში გაშვებული კიბერპანკ სამუშაო გარემო მრავალფანჯრიანი სისტემით, Tokyo Night თემით, ანიმაციებითა და სისტემური მონიტორინგის ფუნქციებით.",
-    proj2Desc:
-      "თანამედროვე, მაღალი წარმადობის ონლაინ მაღაზიის ვებ-აპლიკაცია აწყობილი Next.js-ით და Tailwind CSS-ით, ოპტიმიზებული მომხმარებლის ინტერფეისითა და სრულყოფილი სავაჭრო ფუნქციონალით.",
     proj3Desc:
       "რეალურდროული კრიპტო ტერმინალი Swiss private banking სტილში: ლაივ ფასები Binance WebSocket-ით, ცოცხალი სანთლების გრაფიკი, Level-2 order book და OTC ორდერების პანელი.",
     proj4Desc:
@@ -110,8 +108,6 @@ const i18nData = {
       "Interactive web applications, cyberpunk interfaces, and experimental UI systems.",
     proj1Desc:
       "In-browser cyberpunk desktop environment featuring multi-window manager, Tokyo Night theme, physics animations, and system telemetry.",
-    proj2Desc:
-      "A modern, high-performance online store built with Next.js and Tailwind CSS, featuring a polished UI and a complete shopping flow.",
     proj3Desc:
       "Real-time crypto terminal in a Swiss private banking style: live Binance WebSocket prices, streaming candlestick chart, Level-2 order book and an OTC order panel.",
     proj4Desc:
