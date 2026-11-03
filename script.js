@@ -51,7 +51,7 @@ const i18nData = {
     projectsPageSubtitle:
       "ინტერაქციული ვებ-აპლიკაციები, კიბერპანკ ინტერფეისები და ექსპერიმენტული UI სისტემები.",
     proj1Desc:
-      "ბრაუზერში გაშვებული კიბერპანკ სამუშაო გარემო მრავალფანჯრიანი სისტემით, Tokyo Night თემით, ანიმაციებითა და სისტემური მონიტორინგის ფუნქციებით.",
+      "ბრაუზერში გაშვებული კიბერპანკ ოპერაციული სისტემა: ნამდვილი Linux 6.8 ტერმინალი (x86 ემულატორი v86-ით), ჩანართებიანი ბრაუზერი, ფანჯრების მენეჯერი, Web Audio სინთი და ორი ენა.",
     proj3Desc:
       "რეალურდროული კრიპტო ტერმინალი Swiss private banking სტილში: ლაივ ფასები Binance WebSocket-ით, ცოცხალი სანთლების გრაფიკი, Level-2 order book და OTC ორდერების პანელი.",
     proj4Desc:
@@ -107,7 +107,7 @@ const i18nData = {
     projectsPageSubtitle:
       "Interactive web applications, cyberpunk interfaces, and experimental UI systems.",
     proj1Desc:
-      "In-browser cyberpunk desktop environment featuring multi-window manager, Tokyo Night theme, physics animations, and system telemetry.",
+      "Cyberpunk web OS: a real Linux 6.8 terminal (x86 emulated with v86), a tabbed browser, a window manager, a Web Audio synth and two languages.",
     proj3Desc:
       "Real-time crypto terminal in a Swiss private banking style: live Binance WebSocket prices, streaming candlestick chart, Level-2 order book and an OTC order panel.",
     proj4Desc:
