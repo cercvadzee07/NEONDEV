@@ -4,7 +4,6 @@
 const i18nData = {
   ka: {
     navHome: "მთავარი",
-    navAbout: "ჩემ შესახებ",
     navProjects: "პროექტები",
     navTerminal: "ტერმინალი",
     navBack: "← მთავარი",
@@ -61,7 +60,6 @@ const i18nData = {
   },
   en: {
     navHome: "Home",
-    navAbout: "About",
     navProjects: "Projects",
     navTerminal: "Terminal",
     navBack: "← Home",
@@ -117,7 +115,7 @@ const i18nData = {
   },
 };
 
-let currentLang = localStorage.getItem("selectedLang") || "ka";
+let currentLang = localStorage.getItem("selectedLang") || "en";
 const langBtns = document.querySelectorAll(".lang-btn");
 
 function applyLanguage(lang) {
@@ -1397,33 +1395,14 @@ function syncNavbarState() {
 
   const homeLink = navLinksUl.querySelector('a[href="index.html"]:not(.logo)');
   const projLink = navLinksUl.querySelector('a[href="projects.html"]');
-  let aboutLink = navLinksUl.querySelector('a[href="#about"]');
-
-  // 1. თუ index.html-ზე ვართ და About ლინკი აკლია
-  if (!isProjects && !aboutLink) {
-    if (homeLink) {
-      const li1 = document.createElement("li");
-      li1.innerHTML = `<a href="#about" data-i18n="navAbout">${i18nData[currentLang].navAbout}</a>`;
-      homeLink.parentElement.after(li1);
-      aboutLink = li1.querySelector("a");
-    }
-
-    // About ლინკზე ხმის ეფექტების მიბმა
-    if (aboutLink) {
-      aboutLink.addEventListener("mouseenter", playHoverSound);
-      aboutLink.addEventListener("click", playClickSound);
-    }
-  }
 
   // 2. ვაკონტროლებთ გამოჩენა/დამალვას და "←" ისარს
   if (isProjects) {
     if (homeLink) homeLink.setAttribute("data-i18n", "navBack");
     if (projLink) projLink.style.color = "var(--neon-primary)";
-    if (aboutLink) aboutLink.parentElement.style.display = "none";
   } else {
     if (homeLink) homeLink.setAttribute("data-i18n", "navHome");
     if (projLink) projLink.style.color = "";
-    if (aboutLink) aboutLink.parentElement.style.display = "block";
   }
 
   // 3. თარგმანის გადატარება

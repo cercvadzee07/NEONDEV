@@ -1,18 +1,18 @@
 <!doctype html>
-<html lang="ka">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>პროექტები | NEONDEV</title>
+    <title>Projects | NEONDEV</title>
     <meta
       name="description"
-      content="NEONDEV-ის რჩეული პროექტები: LVLUP Gaming Store, Tokyo OS და Strata Vault."
+      content="Featured NEONDEV projects: LVLUP Gaming Store, Tokyo OS and Strata Vault."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="პროექტები | NEONDEV" />
+    <meta property="og:title" content="Projects | NEONDEV" />
     <meta
       property="og:description"
-      content="ინტერაქციული ვებ-აპლიკაციები, კიბერპანკ ინტერფეისები და ექსპერიმენტული UI სისტემები."
+      content="Interactive web apps, cyberpunk interfaces and experimental UI systems."
     />
     <meta
       property="og:url"
@@ -77,9 +77,9 @@
         </div>
 
         <!-- ენის გადამრთველი HUD პანელი (დროშებით) -->
-        <div class="lang-switcher" title="ენის შეცვლა / Switch Language">
+        <div class="lang-switcher" title="Switch Language / ენის შეცვლა">
           <button
-            class="lang-btn active"
+            class="lang-btn"
             data-lang="ka"
             title="ქართული"
             aria-label="ქართული"
@@ -94,7 +94,7 @@
             </svg>
           </button>
           <button
-            class="lang-btn"
+            class="lang-btn active"
             data-lang="en"
             title="English"
             aria-label="English"
@@ -123,7 +123,7 @@
         </div>
 
         <!-- თემების გადამრთველი HUD პანელი -->
-        <div class="theme-switcher" title="ნეონის თემის შეცვლა">
+        <div class="theme-switcher" title="Change neon theme">
           <button
             class="theme-dot active"
             data-theme="tokyo"
@@ -161,19 +161,17 @@
 
       <!-- ლინკები (მხოლოდ მთავარი, პროექტები და დაკავშირება) -->
       <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" data-i18n="navBack">&larr; მთავარი</a></li>
+        <li><a href="index.html" data-i18n="navBack">← Home</a></li>
         <li>
           <a
             href="projects.html"
             style="color: var(--neon-primary)"
             data-i18n="navProjects"
-            >პროექტები</a
+            >Projects</a
           >
         </li>
         <li class="mobile-btn-wrap">
-          <button class="btn-neon btn-mobile-connect" data-i18n="connectBtn">
-            დაკავშირება
-          </button>
+          <button class="btn-neon btn-mobile-connect" data-i18n="connectBtn">Contact</button>
         </li>
         <!-- თემების გადამრთველი მობილურის მენიუში -->
         <li class="mobile-theme-section">
@@ -202,10 +200,8 @@
       </ul>
 
       <div class="nav-right">
-        <button class="btn-neon nav-desktop-btn" data-i18n="connectBtn">
-          დაკავშირება
-        </button>
-        <button class="hamburger" id="hamburgerBtn" aria-label="მენიუ">
+        <button class="btn-neon nav-desktop-btn" data-i18n="connectBtn">Contact</button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
           <span class="bar"></span>
           <span class="bar"></span>
           <span class="bar"></span>
@@ -218,13 +214,10 @@
       <div class="projects-header reveal">
         <div class="badge">ARCHIVE // V1.0</div>
         <h1 class="page-title">
-          <span data-i18n="projectsPageTitle1">რჩეული</span>
-          <span data-i18n="projectsPageTitle2">პროექტები</span>
+          <span data-i18n="projectsPageTitle1">Featured</span>
+          <span data-i18n="projectsPageTitle2">Projects</span>
         </h1>
-        <p class="page-subtitle" data-i18n="projectsPageSubtitle">
-          ინტერაქციული ვებ-აპლიკაციები, კიბერპანკ ინტერფეისები და ექსპერიმენტული
-          UI სისტემები.
-        </p>
+        <p class="page-subtitle" data-i18n="projectsPageSubtitle">Interactive web applications, cyberpunk interfaces, and experimental UI systems.</p>
       </div>
 
       <div class="showcase-list">
@@ -250,11 +243,7 @@
               <span class="tag">PostgreSQL / Prisma</span>
             </div>
             <h2>LVLUP Gaming Store</h2>
-            <p data-i18n="proj4Desc">
-              სრული გეიმინგ ონლაინ მაღაზია: კატალოგი ფილტრებით, ლაივ ძებნა, PC
-              Builder თავსებადობის შემოწმებით, კალათა, checkout, ავტორიზაცია და
-              ადმინ პანელი. Backend: Express API, PostgreSQL ბაზა.
-            </p>
+            <p data-i18n="proj4Desc">Full-stack gaming store: filtered catalog, live search, a PC Builder with compatibility checks, cart, checkout, accounts and an admin panel. Backend: Express API with a PostgreSQL database.</p>
             <div class="showcase-actions">
               <a
                 href="https://lvlup-fawn.vercel.app/"
@@ -262,7 +251,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 data-i18n="liveDemoBtn"
-                >Live Demo &rarr;</a
+                >Live Demo →</a
               >
               <a
                 href="https://github.com/cercvadzee07/gaming-store"
@@ -298,11 +287,7 @@
               <span class="tag">Web Audio API</span>
             </div>
             <h2>Tokyo OS (by NEONDEV)</h2>
-            <p data-i18n="proj1Desc">
-              ბრაუზერში გაშვებული კიბერპანკ ოპერაციული სისტემა: ნამდვილი Linux
-              6.8 ტერმინალი (x86 ემულატორი v86-ით), ჩანართებიანი ბრაუზერი,
-              ფანჯრების მენეჯერი, Web Audio სინთი და ორი ენა.
-            </p>
+            <p data-i18n="proj1Desc">Cyberpunk web OS: a real Linux 6.8 terminal (x86 emulated with v86), a tabbed browser, a window manager, a Web Audio synth and two languages.</p>
             <div class="showcase-actions">
               <a
                 href="https://cercvadzee07.github.io/Tokyo-OS/os.html"
@@ -310,7 +295,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 data-i18n="liveDemoBtn"
-                >Live Demo &rarr;</a
+                >Live Demo →</a
               >
               <a
                 href="https://github.com/cercvadzee07/Tokyo-OS"
@@ -345,11 +330,7 @@
               <span class="tag">Binance WebSocket</span>
             </div>
             <h2>Strata Vault</h2>
-            <p data-i18n="proj3Desc">
-              რეალურდროული კრიპტო ტერმინალი Swiss private banking სტილში:
-              ლაივ ფასები Binance WebSocket-ით, ცოცხალი სანთლების გრაფიკი,
-              Level-2 order book და OTC ორდერების პანელი.
-            </p>
+            <p data-i18n="proj3Desc">Real-time crypto terminal in a Swiss private banking style: live Binance WebSocket prices, streaming candlestick chart, Level-2 order book and an OTC order panel.</p>
             <div class="showcase-actions">
               <a
                 href="https://strata-vault-otlus2s0t-cercvadzee.vercel.app/"
@@ -357,7 +338,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 data-i18n="liveDemoBtn"
-                >Live Demo &rarr;</a
+                >Live Demo →</a
               >
               <a
                 href="https://github.com/cercvadzee07/strata-vault"
@@ -378,10 +359,7 @@
       <div class="footer-container">
         <div class="footer-brand">
           <div class="logo">NEON<span>DEV</span></div>
-          <p data-i18n="footerDesc">
-            თანამედროვე ციფრული გადაწყვეტილებები და ინტერაქციული
-            ვებ-გამოცდილება.
-          </p>
+          <p data-i18n="footerDesc">Modern digital solutions and immersive interactive web experiences.</p>
         </div>
         <div class="footer-socials">
           <a
@@ -405,7 +383,7 @@
             type="button"
             id="scrollTopBtn"
             class="btn-scroll-top"
-            title="ზემოთ დაბრუნება"
+            title="Back to top"
             aria-label="Scroll to top"
           >
             &#8593;
@@ -413,7 +391,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p data-i18n="footerCopy">&copy; 2026 NEONDEV. ყველა უფლება დაცულია.</p>
+        <p data-i18n="footerCopy">© 2026 NEONDEV. All rights reserved.</p>
       </div>
     </footer>
 
@@ -429,26 +407,24 @@
           &times;
         </button>
         <h3 class="modal-title">
-          <span data-i18n="modalContactTitle1">მოდი</span>
-          <span data-i18n="modalContactTitle2">დავუკავშირდეთ</span>
+          <span data-i18n="modalContactTitle1">Let's</span>
+          <span data-i18n="modalContactTitle2">Connect</span>
         </h3>
-        <p class="modal-desc" data-i18n="modalContactDesc">
-          გაქვს საინტერესო იდეა ან პროექტი? მომწერე ნებისმიერ დროს.
-        </p>
+        <p class="modal-desc" data-i18n="modalContactDesc">Have a project or opportunity? Send a message anytime.</p>
         <form class="modal-form" id="contactForm">
           <div class="input-group">
-            <label data-i18n="labelName">სახელი</label>
+            <label data-i18n="labelName">Name</label>
             <input
               type="text"
               name="name"
-              placeholder="თქვენი სახელი"
+              placeholder="Your name"
               data-i18n-ph="phName"
               required
             />
           </div>
 
           <div class="input-group">
-            <label data-i18n="labelEmail">ელ-ფოსტა</label>
+            <label data-i18n="labelEmail">Email</label>
             <input
               type="email"
               name="email"
@@ -458,11 +434,11 @@
           </div>
 
           <div class="input-group">
-            <label data-i18n="labelMsg">შეტყობინება</label>
+            <label data-i18n="labelMsg">Message</label>
             <textarea
               name="message"
               rows="3"
-              placeholder="მოკლედ თქვენი იდეის შესახებ..."
+              placeholder="Tell me about your project..."
               data-i18n-ph="phMsg"
               required
             ></textarea>
@@ -475,9 +451,7 @@
             class="btn-primary modal-submit"
             id="submitBtn"
             data-i18n="sendBtn"
-          >
-            გაგზავნა
-          </button>
+          >Send Message</button>
         </form>
       </div>
     </div>
