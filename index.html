@@ -211,22 +211,23 @@
         </div>
 
         <h1 class="hero-title">
-          <span data-i18n="heroTitle1">Building Modern</span> <br />
+          <span data-i18n="heroTitle1">Building Production-Ready</span> <br />
           <span class="gradient-text" data-i18n="heroTitle2"
-            >Digital Experiences</span
+            >Web Apps &amp; MVPs</span
           >
         </h1>
 
-        <p class="hero-desc" data-i18n="heroDesc">Front-end engineering & interactive UI design. Clean code, high performance, and signature cyberpunk neon aesthetics.</p>
+        <p class="hero-desc" data-i18n="heroDesc">High-performance full-stack web applications, interactive UIs, and rapid MVP development using Next.js, React, and TypeScript. Shipped fast.</p>
 
         <div class="hero-actions">
           <a
-            href="projects.html"
+            href="#featured"
             class="btn-primary"
             data-i18n="viewProjectsBtn"
-            >View Projects</a
+            >VIEW PROJECTS / MVPs</a
           >
-          <button class="btn-secondary" id="resumeBtn" data-i18n="resumeBtn">My Resume</button>
+          <!-- ხსნის საკონტაქტო ფორმას -->
+          <button class="btn-secondary" id="heroContactBtn" data-i18n="startProjectBtn">START A PROJECT</button>
         </div>
       </section>
 
@@ -265,73 +266,144 @@
                 <div class="stat-label">Passion to Code</div>
               </div>
             </div>
+
+            <!-- რეზიუმეს ღილაკი (ჰერო-დან აქ გადმოვიდა, მოდალი ხელმისაწვდომი რჩება) -->
+            <button class="btn-secondary about-resume-btn" id="resumeBtn" data-i18n="resumeBtn">My Resume</button>
           </div>
 
-          <!-- მარჯვენა სვეტი: ტექნოლოგიური სტეკი -->
+          <!-- მარჯვენა სვეტი: სერვისები (What I Offer) -->
           <div class="skills-card reveal">
-            <h3 class="skills-heading">Core <span>Technologies</span></h3>
-            <p class="skills-desc" data-i18n="skillsDesc">Technologies and tools I work with on a daily basis:</p>
+            <h3 class="skills-heading" data-i18n="servicesHeading">What I <span>Offer</span></h3>
+            <p class="skills-desc" data-i18n="skillsDesc">End-to-end services for startups, founders, and product teams:</p>
 
-            <div class="skills-list">
-              <div class="skill-item">
-                <div class="skill-info">
-                  <span>HTML5 / Semantic Layouts</span>
-                  <span class="skill-pct">95%</span>
-                </div>
-                <div class="skill-bar">
-                  <div class="skill-fill" style="--w: 95%"></div>
-                </div>
-              </div>
+            <div class="services-list">
+              <article class="service-item">
+                <span class="service-index">01</span>
+                <h4 data-i18n="svc1Title">Rapid MVP &amp; SaaS Prototypes</h4>
+                <p data-i18n="svc1Desc">Custom, database-driven web applications and functional MVPs built using Next.js, React, TypeScript, Supabase/Firebase, and APIs. Fully deployed in days.</p>
+              </article>
 
-              <div class="skill-item">
-                <div class="skill-info">
-                  <span>Modern CSS / Flexbox & Grid / Canvas</span>
-                  <span class="skill-pct">90%</span>
-                </div>
-                <div class="skill-bar">
-                  <div class="skill-fill" style="--w: 90%"></div>
-                </div>
-              </div>
+              <article class="service-item">
+                <span class="service-index">02</span>
+                <h4 data-i18n="svc2Title">Interactive UI &amp; Dashboards</h4>
+                <p data-i18n="svc2Desc">State-heavy front-ends, real-time dashboards, state management (Zustand), and responsive data dashboards. High-performance, clean architecture.</p>
+              </article>
 
-              <div class="skill-item">
-                <div class="skill-info">
-                  <span>Vanilla JavaScript / Web Audio API</span>
-                  <span class="skill-pct">85%</span>
-                </div>
-                <div class="skill-bar">
-                  <div class="skill-fill" style="--w: 85%"></div>
-                </div>
-              </div>
-
-              <div class="skill-item">
-                <div class="skill-info">
-                  <span>Next.js / Tailwind CSS</span>
-                  <span class="skill-pct">75%</span>
-                </div>
-                <div class="skill-bar">
-                  <div class="skill-fill" style="--w: 75%"></div>
-                </div>
-              </div>
-
-              <div class="skill-item">
-                <div class="skill-info">
-                  <span>Git & GitHub Workflow</span>
-                  <span class="skill-pct">80%</span>
-                </div>
-                <div class="skill-bar">
-                  <div class="skill-fill" style="--w: 80%"></div>
-                </div>
-              </div>
+              <article class="service-item">
+                <span class="service-index">03</span>
+                <h4 data-i18n="svc3Title">Creative UI/UX &amp; Web Experiences</h4>
+                <p data-i18n="svc3Desc">Animations, micro-interactions, responsive design, and bespoke frontend experiences with near-instant load times. Custom CSS, Canvas &amp; Web Audio API.</p>
+              </article>
             </div>
 
             <div class="tech-tags">
+              <span class="tag">Next.js</span>
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Tailwind CSS</span>
+              <span class="tag">Git</span>
               <span class="tag">Linux</span>
-              <span class="tag">Hyprland</span>
-              <span class="tag">Tokyo Night</span>
-              <span class="tag">VS Code</span>
-              <span class="tag">UI/UX</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- რჩეული პროექტები (FEATURED PROJECTS) -->
+      <section class="featured-section" id="featured">
+        <h2 class="section-title reveal">
+          <span data-i18n="projectsPageTitle1">Featured</span>
+          <span data-i18n="projectsPageTitle2">Projects</span>
+        </h2>
+
+        <div class="showcase-list">
+          <!-- LVLUP (flagship full-stack) -->
+          <article class="showcase-card reveal">
+            <div class="showcase-preview">
+              <div class="preview-mockup has-image">
+                <span class="mockup-tag">FLAGSHIP / FULL-STACK</span>
+                <img
+                  src="lvlup-preview.jpg"
+                  alt="LVLUP full-stack web app preview"
+                  class="mockup-img"
+                  loading="lazy"
+                />
+                <div class="mockup-overlay"></div>
+              </div>
+            </div>
+            <div class="showcase-info">
+              <div class="showcase-tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">React</span>
+                <span class="tag">Zustand</span>
+                <span class="tag">Express</span>
+                <span class="tag">PostgreSQL/DB</span>
+              </div>
+              <h2>LVLUP (Full-Stack Web App)</h2>
+              <p data-i18n="featLvlupDesc">Interactive gamified web platform with dynamic data architecture, custom user progression systems, and fully responsive Full-Stack workflows. Deployed and live.</p>
+              <div class="showcase-actions">
+                <a
+                  href="https://lvlup-fawn.vercel.app/"
+                  class="btn-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Live Demo ↗</a
+                >
+                <a
+                  href="https://github.com/cercvadzee07/gaming-store"
+                  class="btn-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- NEONDEV Tokyo OS -->
+          <article class="showcase-card reveal">
+            <div class="showcase-preview">
+              <div class="preview-mockup has-image">
+                <span class="mockup-tag">WEB OS / CANVAS + AUDIO</span>
+                <img
+                  src="tokyo-os-preview.jpg"
+                  alt="NEONDEV Tokyo OS preview"
+                  class="mockup-img"
+                  loading="lazy"
+                />
+                <div class="mockup-overlay"></div>
+              </div>
+            </div>
+            <div class="showcase-info">
+              <div class="showcase-tags">
+                <span class="tag">HTML5 Canvas</span>
+                <span class="tag">Web Audio API</span>
+                <span class="tag">JavaScript</span>
+              </div>
+              <h2>NEONDEV Tokyo OS</h2>
+              <p data-i18n="featTokyoDesc">Custom interactive desktop-OS inspired web experience with live synthesizer, terminal interface, and system utilities.</p>
+              <div class="showcase-actions">
+                <a
+                  href="https://cercvadzee07.github.io/Tokyo-OS/os.html"
+                  class="btn-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Live Demo ↗</a
+                >
+                <a
+                  href="https://github.com/cercvadzee07/Tokyo-OS"
+                  class="btn-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="featured-more reveal">
+          <a href="projects.html" class="btn-secondary" data-i18n="viewAllProjects">View full project archive →</a>
         </div>
       </section>
 
@@ -506,7 +578,7 @@
             <strong style="color: var(--neon-primary)" data-i18n="cvPosLabel"
               >Role:</strong
             >
-            Junior / Mid Front-End Developer
+            Full-Stack &amp; Rapid MVP Developer
           </p>
           <p>
             <strong

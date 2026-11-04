@@ -9,17 +9,33 @@ const i18nData = {
     navBack: "← მთავარი",
     connectBtn: "დაკავშირება",
     heroBadge: "ხელმისაწვდომია ახალი პროექტებისთვის",
-    heroTitle1: "ვაშენებ თანამედროვე",
-    heroTitle2: "ციფრულ გამოცდილებას",
+    heroTitle1: "ვაშენებ production-ready",
+    heroTitle2: "ვებ-აპლიკაციებსა და MVP-ებს",
     heroDesc:
-      "Front-end დეველოპმენტი და ინტერაქციული UI დიზაინი. სუფთა კოდი, მაღალი წარმადობა და გამორჩეული ნეონის ესთეტიკა.",
-    viewProjectsBtn: "ნახე პროექტები",
+      "მაღალი წარმადობის full-stack ვებ-აპლიკაციები, ინტერაქციული UI და სწრაფი MVP დეველოპმენტი Next.js-ით, React-ით და TypeScript-ით. სწრაფი მიწოდება.",
+    viewProjectsBtn: "პროექტები / MVP",
+    startProjectBtn: "დავიწყოთ პროექტი",
     resumeBtn: "ჩემი რეზიუმე",
+    servicesHeading: "რას <span>გთავაზობ</span>",
+    svc1Title: "სწრაფი MVP და SaaS პროტოტიპები",
+    svc1Desc:
+      "ინდივიდუალური, მონაცემთა ბაზაზე დაფუძნებული ვებ-აპლიკაციები და ფუნქციური MVP-ები Next.js-ით, React-ით, TypeScript-ით, Supabase/Firebase-ით და API-ებით. სრულად გაშვებული რამდენიმე დღეში.",
+    svc2Title: "ინტერაქციული UI და დაშბორდები",
+    svc2Desc:
+      "state-ით დატვირთული front-end-ები, რეალურდროული დაშბორდები, state management (Zustand) და რესპონსიული მონაცემთა პანელები. მაღალი წარმადობა, სუფთა არქიტექტურა.",
+    svc3Title: "კრეატიული UI/UX და ვებ-გამოცდილება",
+    svc3Desc:
+      "ანიმაციები, მიკრო-ინტერაქციები, რესპონსიული დიზაინი და უნიკალური front-end გამოცდილება თითქმის მყისიერი ჩატვირთვით. Custom CSS, Canvas და Web Audio API.",
+    featLvlupDesc:
+      "ინტერაქციული, გეიმიფიცირებული ვებ-პლატფორმა დინამიკური მონაცემთა არქიტექტურით, მომხმარებლის პროგრესის სისტემით და სრულად რესპონსიული full-stack workflow-ით. გაშვებული და ლაივშია.",
+    featTokyoDesc:
+      "დესკტოპ ოპერაციული სისტემით შთაგონებული ინტერაქციული ვებ-გამოცდილება ლაივ სინთეზატორით, ტერმინალის ინტერფეისით და სისტემური ხელსაწყოებით.",
+    viewAllProjects: "პროექტების სრული არქივი →",
     aboutTitle1: "ჩემ",
     aboutTitle2: "შესახებ",
     aboutText:
       "ვქმნი თანამედროვე, სწრაფ და ვიზუალურად გამორჩეულ ციფრულ ინტერფეისებს. განსაკუთრებულ ყურადღებას ვუთმობ დეტალებს, მიკრო-ინტერაქციებს, სუფთა არქიტექტურასა და კიბერპანკ/Tokyo Night ესთეტიკას.",
-    skillsDesc: "ტექნოლოგიები და ხელსაწყოები, რომლებსაც ყოველდღიურად ვიყენებ:",
+    skillsDesc: "სრული ციკლის სერვისები სტარტაპებისთვის, დამფუძნებლებისა და პროდუქტის გუნდებისთვის:",
     termTitle1: "ინტერაქციული",
     termTitle2: "ტერმინალი",
     termWelcome:
@@ -65,17 +81,33 @@ const i18nData = {
     navBack: "← Home",
     connectBtn: "Contact",
     heroBadge: "Available for new projects",
-    heroTitle1: "Building Modern",
-    heroTitle2: "Digital Experiences",
+    heroTitle1: "Building Production-Ready",
+    heroTitle2: "Web Apps &amp; MVPs",
     heroDesc:
-      "Front-end engineering & interactive UI design. Clean code, high performance, and signature cyberpunk neon aesthetics.",
-    viewProjectsBtn: "View Projects",
+      "High-performance full-stack web applications, interactive UIs, and rapid MVP development using Next.js, React, and TypeScript. Shipped fast.",
+    viewProjectsBtn: "VIEW PROJECTS / MVPs",
+    startProjectBtn: "START A PROJECT",
     resumeBtn: "My Resume",
+    servicesHeading: "What I <span>Offer</span>",
+    svc1Title: "Rapid MVP &amp; SaaS Prototypes",
+    svc1Desc:
+      "Custom, database-driven web applications and functional MVPs built using Next.js, React, TypeScript, Supabase/Firebase, and APIs. Fully deployed in days.",
+    svc2Title: "Interactive UI &amp; Dashboards",
+    svc2Desc:
+      "State-heavy front-ends, real-time dashboards, state management (Zustand), and responsive data dashboards. High-performance, clean architecture.",
+    svc3Title: "Creative UI/UX &amp; Web Experiences",
+    svc3Desc:
+      "Animations, micro-interactions, responsive design, and bespoke frontend experiences with near-instant load times. Custom CSS, Canvas &amp; Web Audio API.",
+    featLvlupDesc:
+      "Interactive gamified web platform with dynamic data architecture, custom user progression systems, and fully responsive Full-Stack workflows. Deployed and live.",
+    featTokyoDesc:
+      "Custom interactive desktop-OS inspired web experience with live synthesizer, terminal interface, and system utilities.",
+    viewAllProjects: "View full project archive →",
     aboutTitle1: "About",
     aboutTitle2: "Me",
     aboutText:
       "Crafting modern, fast, and visually striking digital interfaces. Focused on micro-interactions, clean frontend architecture, and Cyberpunk/Tokyo Night design aesthetics.",
-    skillsDesc: "Technologies and tools I work with on a daily basis:",
+    skillsDesc: "End-to-end services for startups, founders, and product teams:",
     termTitle1: "Interactive",
     termTitle2: "Terminal",
     termWelcome:
@@ -1044,7 +1076,6 @@ const contactBtn = document.querySelector(".nav-desktop-btn");
 const mobileConnectBtn = document.querySelector(".btn-mobile-connect");
 const modal = document.getElementById("contactModal");
 const closeBtn = document.getElementById("closeBtn");
-const resumeBtn = document.getElementById("resumeBtn");
 const resumeModal = document.getElementById("resumeModal");
 const closeResumeBtn = document.getElementById("closeResumeBtn");
 
@@ -1066,6 +1097,11 @@ function closeModal(targetModal) {
 }
 
 if (contactBtn) contactBtn.addEventListener("click", () => openModal(modal));
+// <main>-ის შიგნით არსებული ღილაკები SPA გადასვლისას იცვლება, ამიტომ delegation
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#heroContactBtn")) openModal(modal);
+  else if (e.target.closest("#resumeBtn") && resumeModal) openModal(resumeModal);
+});
 if (mobileConnectBtn) {
   mobileConnectBtn.addEventListener("click", () => {
     if (hamburgerBtn && navLinks) {
@@ -1076,8 +1112,6 @@ if (mobileConnectBtn) {
   });
 }
 if (closeBtn) closeBtn.addEventListener("click", () => closeModal(modal));
-if (resumeBtn && resumeModal)
-  resumeBtn.addEventListener("click", () => openModal(resumeModal));
 if (closeResumeBtn && resumeModal)
   closeResumeBtn.addEventListener("click", () => closeModal(resumeModal));
 
